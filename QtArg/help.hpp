@@ -77,7 +77,7 @@ class QtHelpHasPrintedEx
 			:	QtArgBaseException( QString::null )
 		{}
 
-		virtual ~QtHelpHasPrintedEx()
+		virtual ~QtHelpHasPrintedEx() throw()
 		{}
 }; // class QtHelpHasPrintedEx
 

@@ -75,13 +75,13 @@ class QtArgIface {
 
 		QtArgIface( const NamesList & names,
 			const FlagsList & flags )
-			:	m_names( names )
-			,	m_flags( flags )
+			:	m_flags( flags )
+			,	m_names( names )
 		{}
 
 		virtual ~QtArgIface()
 		{}
-	
+
 	public:
 		/*!
 			\retval true if argument is required.

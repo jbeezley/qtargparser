@@ -54,7 +54,7 @@ class QtArgXORMaskNotObservedEx
 			:	QtArgBaseException( desc )
 		{}
 
-		virtual ~QtArgXORMaskNotObservedEx()
+		virtual ~QtArgXORMaskNotObservedEx() throw()
 		{}
 }; // class QtArgXORMaskNotObservedEx
 
@@ -72,7 +72,7 @@ class QtRequiredArgumentUnderXORMaskEx
 			:	QtArgBaseException( desc )
 		{}
 
-		virtual ~QtRequiredArgumentUnderXORMaskEx()
+		virtual ~QtRequiredArgumentUnderXORMaskEx() throw()
 		{}
 }; // class QtArgXORMaskNotObservedEx
 
@@ -212,7 +212,8 @@ QtXorArg::QtXorArg( QtArgIface & arg1,
 	QtArgIface & arg2,
 	const QString & name,
 	bool required )
-	:	m_required( required )
+	:	QtArgIface()
+	,	m_required( required )
 	,	m_name( name )
 {
 	add( arg1 );
@@ -232,7 +233,8 @@ QtXorArg::QtXorArg( const QtArgCmdLineIface::QtArgumentsList & args,
 
 inline
 QtXorArg::QtXorArg( const QtXorArg & arg )
-	:	m_args( arg.arguments() )
+	:	QtArgIface()
+	,	m_args( arg.arguments() )
 	,	m_required( arg.m_required )
 	,	m_name( arg.m_name )
 {
@@ -376,12 +378,12 @@ QtXorArg::arguments() const
 }
 
 inline void
-QtXorArg::process( QtArgCmdLineContext & context )
+QtXorArg::process( QtArgCmdLineContext & )
 {
 }
 
 inline void
-QtXorArg::visit( QtArgCmdLineContext & context )
+QtXorArg::visit( QtArgCmdLineContext & )
 {
 }
 

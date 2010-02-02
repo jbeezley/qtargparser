@@ -46,7 +46,7 @@ class QtArgVisitorIface {
 
 	public:
 		//! Process with wisitor.
-		virtual void visit( QtArgCmdLineContext & context ) {}
+		virtual void visit( QtArgCmdLineContext & ) {}
 }; // class QtArgVisitorIface
 
 #endif // QTARG__VISITOR_HPP__INCLUDED

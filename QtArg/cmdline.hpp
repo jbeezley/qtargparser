@@ -281,7 +281,11 @@ QtArgCmdLine::parse()
 					+ nameWithoutDelims[ i ];
 
 				if( i != i_max )
-					argument->process( QtArgCmdLineContext( QStringList() ) );
+				{
+					QStringList dummyArgsList;
+					QtArgCmdLineContext dummyContext( dummyArgsList );
+					argument->process( dummyContext );
+				}
 				else
 					argument->process( m_context );
 

@@ -49,7 +49,7 @@ class QtArgBaseException
 			:	m_what( desc )
 		{}
 
-		virtual ~QtArgBaseException()
+		virtual ~QtArgBaseException() throw()
 		{}
 
 		virtual const char * what() const throw()
@@ -76,7 +76,7 @@ class QtArgUnknownArgumentEx
 			:	QtArgBaseException( desc )
 		{}
 
-		virtual ~QtArgUnknownArgumentEx()
+		virtual ~QtArgUnknownArgumentEx() throw()
 		{}
 }; // class QtArgUnknownArgumentEx
 
@@ -98,7 +98,7 @@ class QtArgUnexpectedOptionEx
 			:	QtArgBaseException( desc )
 		{}
 
-		virtual ~QtArgUnexpectedOptionEx()
+		virtual ~QtArgUnexpectedOptionEx() throw()
 		{}
 }; // class QtArgUnexpectedOptionEx
 
@@ -117,7 +117,7 @@ class QtArgFlagWithValueInFlagsCompositionEx
 			:	QtArgBaseException( desc )
 		{}
 
-		virtual ~QtArgFlagWithValueInFlagsCompositionEx()
+		virtual ~QtArgFlagWithValueInFlagsCompositionEx() throw()
 		{}
 }; // QtArgFlagWithValueInFlagsCompositionEx
 
@@ -136,7 +136,7 @@ class QtArgNotDefinedOptionForTheArgumentEx
 			:	QtArgBaseException( desc )
 		{}
 
-		virtual ~QtArgNotDefinedOptionForTheArgumentEx()
+		virtual ~QtArgNotDefinedOptionForTheArgumentEx() throw()
 		{}
 }; // QtArgNotDefinedOptionForTheArgumentEx
 
@@ -154,7 +154,7 @@ class QtArgNotDefinedMandatoryArgumentEx
 			:	QtArgBaseException( desc )
 		{}
 
-		virtual ~QtArgNotDefinedMandatoryArgumentEx()
+		virtual ~QtArgNotDefinedMandatoryArgumentEx() throw()
 		{}
 }; // QtArgNotDefinedMandatoryArgumentEx
 
@@ -172,7 +172,7 @@ class QtArgDissallowedFlagOrNameEx
 			:	QtArgBaseException( desc )
 		{}
 
-		virtual ~QtArgDissallowedFlagOrNameEx()
+		virtual ~QtArgDissallowedFlagOrNameEx() throw()
 		{}
 }; // class QtArgDissallowedFlagOrNameEx
 
@@ -190,7 +190,7 @@ class QtArgNameOrFlagAlreadyKnownEx
 			:	QtArgBaseException( desc )
 		{}
 
-		virtual ~QtArgNameOrFlagAlreadyKnownEx()
+		virtual ~QtArgNameOrFlagAlreadyKnownEx() throw()
 		{}
 }; // class QtArgNameOrFlagAlreadyKnownEx
 
@@ -210,7 +210,7 @@ class QtArgNotDefinedNorNameNorFlagEx
 						"Not defined nor name nor flag for argument." ) )
 		{}
 
-		virtual ~QtArgNotDefinedNorNameNorFlagEx()
+		virtual ~QtArgNotDefinedNorNameNorFlagEx() throw()
 		{}
 }; // class QtArgNotDefinedNorNameNorFlagEx
 
@@ -228,7 +228,7 @@ class QtArgContraintNotObservedEx
 			:	QtArgBaseException( desc )
 		{}
 
-		virtual ~QtArgContraintNotObservedEx()
+		virtual ~QtArgContraintNotObservedEx() throw()
 		{}
 }; // class QtArgContraintNotObservedEx
 
