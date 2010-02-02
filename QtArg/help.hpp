@@ -59,7 +59,7 @@ class QtArgHelpPrinterHasntDefinedEx
 					"Help printer hasn't defined" ) )
 		{}
 
-		virtual ~QtArgHelpPrinterHasntDefinedEx()
+		virtual ~QtArgHelpPrinterHasntDefinedEx() throw()
 		{}
 }; // class QtArgHelpPrinterHasntDefinedEx
 
