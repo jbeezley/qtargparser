@@ -3,7 +3,7 @@
 	\file
 	\brief Command line argument with multiply values.
 
-	\author Igor P. Mironchik (imironchik at intervale dot ru).
+	\author Igor P. Mironchik (imironchick at gmail dot com).
 
 	Copyright (c) 2009 Igor P. Mironchik
 
