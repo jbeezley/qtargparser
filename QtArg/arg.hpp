@@ -890,7 +890,7 @@ QtArg::check() const
 				QString::fromLatin1( "Not defined mandatory argument: %1" )
 					.arg( names().size() ? names().front() : flags().front() ) );
 
-		if( isWithValue() )
+		if( isPresent() && isWithValue() )
 			throw QtArgNotDefinedOptionForTheArgumentEx(
 				QString::fromLatin1( "Not defined value of the argument: %1" )
 					.arg( names().size() ? names().front() : flags().front() ) );
