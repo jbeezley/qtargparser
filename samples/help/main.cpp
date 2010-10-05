@@ -3,7 +3,7 @@
 	\file
 	\author Igor P. Mironchik (imironchick at gmail dot com).
 
-	Copyright (c) 2009 Igor P. Mironchik
+	Copyright (c) 2010 Igor P. Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -32,6 +32,9 @@
 #include <QtArg/XorArg>
 #include <QtArg/CmdLine>
 #include <QtArg/Help>
+
+// Qt include.
+#include <QtCore/QDebug>
 
 
 void main( int argc, char ** argv )
@@ -70,5 +73,9 @@ void main( int argc, char ** argv )
 	}
 	catch( const QtHelpHasPrintedEx & x )
 	{
+	}
+	catch( const QtArgBaseException & x )
+	{
+		qDebug() << x.what();
 	}
 }

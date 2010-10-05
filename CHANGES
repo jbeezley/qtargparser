@@ -6,3 +6,8 @@ version 1.0.1 (2010.03.18)
 version 1.0.2 (2010.06.01)
 
   * Fixed throwing exception on not required argument with option that not defined.
+
+version 1.0.3 (2010.09.05)
+
+  * Fixed issue #2 (If one passes "--test=1" the program crashes with a segfault).
+  * Added support of flags with values without spaces ("-b5" for example).

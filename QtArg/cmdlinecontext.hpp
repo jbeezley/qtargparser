@@ -5,7 +5,7 @@
 
 	\author Igor P. Mironchik (imironchick at gmail dot com).
 
-	Copyright (c) 2009 Igor P. Mironchik
+	Copyright (c) 2010 Igor P. Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -78,8 +78,7 @@ class QtArgCmdLineContext {
 		//! Prepend context with new value.
 		void prepend( const QString & value )
 		{
-			m_argv.insert( m_current, value );
-			--m_current;
+			m_current = m_argv.insert( m_current, value );
 		}
 
 

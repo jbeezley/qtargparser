@@ -5,7 +5,7 @@
 
 	\author Igor P. Mironchik (imironchick at gmail dot com).
 
-	Copyright (c) 2009 Igor P. Mironchik
+	Copyright (c) 2010 Igor P. Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -164,7 +164,8 @@ class QtArgIface {
 	protected:
 		//! Process argument.
 		//! Can throw exceptions.
-		virtual void process( QtArgCmdLineContext & context ) = 0;
+		//! \return The number of processed arguments.
+		virtual int process( QtArgCmdLineContext & context ) = 0;
 
 		//! Process with visitor.
 		virtual void visit( QtArgCmdLineContext & context ) = 0;
@@ -450,7 +451,8 @@ class QtArg
 	protected:
 			//! Process argument.
 			//! Can throw exceptions.
-			virtual void process( QtArgCmdLineContext & context );
+			//! \return The number of processed arguments.
+			virtual int process( QtArgCmdLineContext & context );
 
 			//! Process with visitor.
 			virtual void visit( QtArgCmdLineContext & context );
@@ -897,18 +899,24 @@ QtArg::check() const
 	}
 }
 
-inline void
+inline int
 QtArg::process( QtArgCmdLineContext & context )
 {
 	if( isWithValue() )
 	{
 		if( !context.atEnd() )
+		{
 			setValue( context.next() );
+
+			return 1;
+		}
 		else
 			setPresent();
 	}
 	else
 		setValue( QVariant( true ) );
+
+	return 0;
 }
 
 inline void

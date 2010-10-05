@@ -5,7 +5,7 @@
 
 	\author Igor P. Mironchik (imironchick at gmail dot com).
 
-	Copyright (c) 2009 Igor P. Mironchik
+	Copyright (c) 2010 Igor P. Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -282,9 +282,17 @@ QtArgCmdLine::parse()
 
 				if( i != i_max )
 				{
-					QStringList dummyArgsList;
+					QStringList dummyArgsList( nameWithoutDelims
+						.right( nameWithoutDelims.length() - i - 1 ) );
 					QtArgCmdLineContext dummyContext( dummyArgsList );
-					argument->process( dummyContext );
+
+					if( argument->process( dummyContext ) )
+					{
+						argument->visit( m_context );
+						argument->checkConstraint();
+
+						break;
+					}
 				}
 				else
 					argument->process( m_context );

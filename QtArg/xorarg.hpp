@@ -5,7 +5,7 @@
 
 	\author Igor P. Mironchik (imironchick at gmail dot com).
 
-	Copyright (c) 2009 Igor P. Mironchik
+	Copyright (c) 2010 Igor P. Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -186,7 +186,8 @@ class QtXorArg
 
 	protected:
 			//! Process argument.
-			virtual void process( QtArgCmdLineContext & context );
+			//! \return The number of processed arguments.
+			virtual int process( QtArgCmdLineContext & context );
 
 			//! Process with visitor.
 			virtual void visit( QtArgCmdLineContext & context );
@@ -377,9 +378,10 @@ QtXorArg::arguments() const
 	return m_args;
 }
 
-inline void
+inline int
 QtXorArg::process( QtArgCmdLineContext & )
 {
+	return 0;
 }
 
 inline void
