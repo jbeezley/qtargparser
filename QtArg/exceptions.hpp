@@ -32,7 +32,7 @@
 #define QTARG__EXCEPTIONS_HPP__INCLUDED
 
 // C++ include.
-#include <exception>
+#include <stdexcept>
 
 // Qt include.
 #include <QtCore/QString>
@@ -44,24 +44,15 @@
 
 //! Base exception for all exceptions of the QtArg library.
 class QtArgBaseException
-	:	public std::exception
+	:	public std::runtime_error
 {
 	public:
 		explicit QtArgBaseException( const QString & desc )
-			:	m_what( desc )
+			:	std::runtime_error( desc.toLocal8Bit().constData() )
 		{}
 
 		virtual ~QtArgBaseException() throw()
 		{}
-
-		virtual const char * what() const throw()
-		{
-			return m_what.toLocal8Bit().constData();
-		}
-
-	private:
-		//! Description.
-		QString m_what;
 }; // class QtArgBaseException
 
 
@@ -103,25 +94,6 @@ class QtArgUnexpectedOptionEx
 		virtual ~QtArgUnexpectedOptionEx() throw()
 		{}
 }; // class QtArgUnexpectedOptionEx
-
-
-//
-// QtArgFlagWithValueInFlagsCompositionEx
-//
-
-//! Throws when user defines argument with option as flag in the
-//! not last position of the flags composition.
-class QtArgFlagWithValueInFlagsCompositionEx
-	:	public QtArgBaseException
-{
-	public:
-		explicit QtArgFlagWithValueInFlagsCompositionEx( const QString & desc )
-			:	QtArgBaseException( desc )
-		{}
-
-		virtual ~QtArgFlagWithValueInFlagsCompositionEx() throw()
-		{}
-}; // QtArgFlagWithValueInFlagsCompositionEx
 
 
 //
