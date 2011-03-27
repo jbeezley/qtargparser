@@ -15,3 +15,28 @@ version 1.0.3 (2010.10.05)
 version 1.0.4 (2010.10.08)
 
   * Correctness of the exceptions.
+
+version 1.1.0 (2011.03.28)
+
+  * QtArgIface was expanded with new methods:
+    bool isWithValue() const,
+    QString longDescription() const,
+    QString getUsageString( const NamesList & namesList ),
+    QString getHelpString( const NamesList & namesList ).
+  * Were added "USAGE" string in the help.
+  * Were improved help system for the given argument as a paramter for -h,--help.
+    Now you can type with prefixes -, -- or without thew, in this way searching
+    will be produced for an argument name enstead of flag.
+  * QtArg was expanded with new method: void setLongDescription( const QString & desc ).
+    What allow to set long description of the argument for the help system.
+  * QtArgCmdLineIface was expanded with new methods:
+    bool isFlag( const QString & str ),
+    bool isArgument( const QString & str ).
+  * QtArgBaseException was expanded with new method: QString whatAsQString() const.
+  * Exception QtHelpHasPrintedEx was renamed to QtArgHelpHasPrinted.
+  * Now you need not explicitly add default printer to the QtArg. It's already defined.
+    But if you want to set your own printer you can to do it with method:
+    setPrinter( QtArgHelpPrinterIface * p ).
+  * Were revised QtArgHelpPrinterIface with accordance with new help system.
+    It's very important if you implement you own help systems or help printer.
+  * QtRequiredArgumentUnderXORMaskEx was renamed to QtArgRequiredArgumentUnderXORMaskEx.

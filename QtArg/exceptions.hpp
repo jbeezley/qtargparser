@@ -1,10 +1,11 @@
+
 /*!
 	\file
 	\brief Base class of the QtArg exceptions.
 
 	\author Igor P. Mironchik (imironchick at gmail dot com).
 
-	Copyright (c) 2010 Igor P. Mironchik
+	Copyright (c) 2010-2011 Igor P. Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -49,10 +50,21 @@ class QtArgBaseException
 	public:
 		explicit QtArgBaseException( const QString & desc )
 			:	std::runtime_error( desc.toLocal8Bit().constData() )
+			,	m_what( desc )
 		{}
 
 		virtual ~QtArgBaseException() throw()
 		{}
+
+		//! \return Reason of the exception.
+		const QString & whatAsQString() const throw()
+		{
+			return m_what;
+		}
+
+	private:
+		//! What happened.
+		QString m_what;
 }; // class QtArgBaseException
 
 
@@ -179,9 +191,8 @@ class QtArgNotDefinedNorNameNorFlagEx
 {
 	public:
 		explicit QtArgNotDefinedNorNameNorFlagEx()
-			:	QtArgBaseException(
-					QString::fromLatin1(
-						"Not defined nor name nor flag for argument." ) )
+			:	QtArgBaseException( QLatin1String(
+					"Not defined nor name nor flag for argument." ) )
 		{}
 
 		virtual ~QtArgNotDefinedNorNameNorFlagEx() throw()

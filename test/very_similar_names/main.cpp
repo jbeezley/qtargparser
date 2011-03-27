@@ -42,55 +42,29 @@
 UNIT_TEST_START
 
 	//
-	// test_not_fully_defined_argument_name
+	// test_very_similar_names
 	//
 
-	UNIT_START( test_not_fully_defined_argument_name )
-
-		const QString value = QString::fromLatin1( "value" );
+	UNIT_START( test_very_similar_names )
 
 		QStringList arguments;
-		arguments << "program" << "--on" << value;
+		arguments << "test" << "--log" << "log.txt" << "--log1" << "log1.txt";
 
 		QtArgCmdLine cmd( arguments );
 
-		QtArg one( QString::fromLatin1( "one" ), QString(), false, true );
+		QtArg log( QtArgIface::NamesList() << QLatin1String( "log" ),
+			QLatin1String( "description log file" ), false, true );
+		QtArg log1( QtArgIface::NamesList() << QLatin1String( "log1" ),
+			QLatin1String( "description log file2" ), false, true );
 
-		cmd.addArg( one );
-
-		CHECK_CONDITION( one.value().toString().isEmpty() )
+		cmd.addArg( log1 );
+		cmd.addArg( log );
 
 		cmd.parse();
 
-		CHECK_CONDITION( one.value().toString() == value )
+		CHECK_CONDITION( log.value().toString() == "log.txt" )
+		CHECK_CONDITION( log1.value().toString() == "log1.txt" )
 
-	UNIT_FINISH( test_not_fully_defined_argument_name )
-
-
-	//
-	// test_contentious_argument_name
-	//
-
-	UNIT_START( test_contentious_argument_name )
-
-		const QString value = QString::fromLatin1( "value" );
-
-		QStringList arguments;
-		arguments << "program" << "--on" << value;
-
-		QtArgCmdLine cmd( arguments );
-
-		QtArg one( QString::fromLatin1( "one" ), QString(), false, true );
-		QtArg once( QString::fromLatin1( "once" ), QString(), false, true );
-
-		cmd.addArg( one );
-		cmd.addArg( once );
-
-		CHECK_CONDITION( one.value().toString().isEmpty() )
-		CHECK_CONDITION( once.value().toString().isEmpty() )
-
-		CHECK_THROW( QtArgUnknownArgumentEx, cmd.parse(); )
-
-	UNIT_FINISH( test_contentious_argument_name )
+	UNIT_FINISH( test_very_similar_names )
 
 UNIT_TEST_FINISH

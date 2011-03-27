@@ -5,7 +5,7 @@
 
 	\author Igor P. Mironchik (imironchick at gmail dot com).
 
-	Copyright (c) 2010 Igor P. Mironchik
+	Copyright (c) 2010-2011 Igor P. Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -107,6 +107,20 @@ class QtArgCmdLine
 		//! Can throw exceptions.
 		void parse();
 
+		/*!
+			\return Is \par str an flag or string of the flags.
+			\retval true if \par str is an flag or string of the flags.
+			\retval false if \par str is not a flag or string of the flags.
+		*/
+		bool isFlag( const QString & str ) const;
+
+		/*!
+			\return Is \par str an argument.
+			\retval true if \par str is an argument.
+			\retval false if \par str is not an argument.
+		*/
+		bool isArgument( const QString & str ) const;
+
 	private:
 		//! Command line context.
 		QtArgCmdLineContext m_context;
@@ -123,10 +137,6 @@ class QtArgCmdLine
 		//! Check correctness of all arguments.
 		//! Can throw Exceptions.
 		void checkArgumentsCorrectness() const;
-		//! \return true if \a str is an flag or string of the flags.
-		bool isFlag( const QString & str ) const;
-		//! \return true if \a str is an argument.
-		bool isArgument( const QString & str ) const;
 		/*!
 			Split string into argument and his value.
 
@@ -397,6 +407,12 @@ QtArgCmdLine::findArgument( const QString & name )
 	foreach( QtArgIface * arg, m_args )
 	{
 		QtArgIface * a = arg->giveArgument( name );
+
+		if( a && a->names().contains( name ) )
+		{
+			ret = a;
+			break;
+		}
 
 		if( ret == NULL )
 			ret = a;

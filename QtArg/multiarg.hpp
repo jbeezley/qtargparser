@@ -5,7 +5,7 @@
 
 	\author Igor P. Mironchik (imironchick at gmail dot com).
 
-	Copyright (c) 2010 Igor P. Mironchik
+	Copyright (c) 2010-2011 Igor P. Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -165,6 +165,17 @@ class QtMultiArg
 			*/
 			virtual void checkConstraint() const;
 
+			/*!
+				Should return "HELP" string for this argument.
+
+				For spaces you have to use string constants from
+				QtArgHelpPrinterIface interface.
+
+				\return "HELP" string for this argument.
+				\par namesList Names of all available arguments.
+			*/
+			virtual QString getHelpString( const NamesList & namesList ) const;
+
 		//! \}
 }; // class QtMultiArg
 
@@ -311,6 +322,18 @@ QtMultiArg::checkConstraint() const
 						.arg( names().size() ? names().front() : flags().front() )
 						.arg( v.toString() ) );
 	}
+}
+
+inline QString
+QtMultiArg::getHelpString( const NamesList & namesList ) const
+{
+	QString help = getUsageString( namesList );
+	help.append( QLatin1String( " [...]" ) );
+	help.append( QtArgHelpPrinterIface::beforeDescription );
+	help.append( description() );
+	help.append( QtArgHelpPrinterIface::newLine );
+
+	return help;
 }
 
 #endif // QTARG__MULTIARG_HPP__INCLUDED

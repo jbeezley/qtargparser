@@ -10,7 +10,7 @@ Mxx_ru::Cpp::exe_target {
 
 		qt = generator( MxxRu::Cpp::Qt4.new( self ) )
 
-		target( "test.dissallowed_argument_names" )
+		target( "test/dissallowed_argument_names/test" )
 
 		cpp_source( "main.cpp" )
 }

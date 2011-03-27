@@ -5,7 +5,7 @@
 
 	\author Igor P. Mironchik (imironchick at gmail dot com).
 
-	Copyright (c) 2010 Igor P. Mironchik
+	Copyright (c) 2010-2011 Igor P. Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -60,21 +60,21 @@ class QtArgXORMaskNotObservedEx
 
 
 //
-// QtRequiredArgumentUnderXORMaskEx
+// QtArgRequiredArgumentUnderXORMaskEx
 //
 
 //! Throws when user tries to add required argument under the XOR mask.
-class QtRequiredArgumentUnderXORMaskEx
+class QtArgRequiredArgumentUnderXORMaskEx
 	:	public QtArgBaseException
 {
 	public:
-		explicit QtRequiredArgumentUnderXORMaskEx( const QString & desc )
+		explicit QtArgRequiredArgumentUnderXORMaskEx( const QString & desc )
 			:	QtArgBaseException( desc )
 		{}
 
-		virtual ~QtRequiredArgumentUnderXORMaskEx() throw()
+		virtual ~QtArgRequiredArgumentUnderXORMaskEx() throw()
 		{}
-}; // class QtArgXORMaskNotObservedEx
+}; // class QtArgRequiredArgumentUnderXORMaskEx
 
 
 //
@@ -131,8 +131,23 @@ class QtXorArg
 			*/
 			virtual bool isDefined() const;
 
+			/*!
+				\return Whether this argument should have a value or not.
+				\retval true if this argument should have a value.
+				\retval false if this argument shouldn't have a value.
+			*/
+			virtual bool isWithValue() const;
+
 			//! \return Description of the argument.
 			virtual QString description() const;
+
+			/*!
+				If long description is empty it's better to return
+				description().
+
+				\return Long descrition for this argument.
+			*/
+			virtual QString longDescription() const;
 
 			/*!
 				Check correctness of the names, flags and so on before parsing.
@@ -183,6 +198,28 @@ class QtXorArg
 				didn't observed.
 			*/
 			virtual void checkConstraint() const;
+
+			/*!
+				Should return "USAGE" string for this argument.
+				For example: "-a%afterFlags%--arg %value%", where
+				"%value%" is QtArgHelpPrinterIface::argValue and
+				"%afterFlags%" is QtArgHelpPrinterIface::afterFlags.
+
+				\return "USAGE" string for this argument.
+				\par namesList Names of all available arguments.
+			*/
+			virtual QString getUsageString( const NamesList & namesList ) const;
+
+			/*!
+				Should return "HELP" string for this argument.
+
+				For spaces you have to use string constants from
+				QtArgHelpPrinterIface interface.
+
+				\return "HELP" string for this argument.
+				\par namesList Names of all available arguments.
+			*/
+			virtual QString getHelpString( const NamesList & namesList ) const;
 
 	protected:
 			//! Process argument.
@@ -270,8 +307,8 @@ QtXorArg::add( QtArgIface * arg )
 		if( !arg->isRequired() )
 				m_args.append( arg );
 		else
-			throw QtRequiredArgumentUnderXORMaskEx(
-				QString::fromLatin1( "A try to add required argument under the XOR mask." ) );
+			throw QtArgRequiredArgumentUnderXORMaskEx(
+				QLatin1String( "A try to add required argument under the XOR mask." ) );
 	}
 }
 
@@ -297,6 +334,12 @@ QtXorArg::isDefined() const
 			defined = true;
 
 	return defined;
+}
+
+inline bool
+QtXorArg::isWithValue() const
+{
+	return false;
 }
 
 inline void
@@ -340,6 +383,12 @@ QtXorArg::check() const
 
 inline QString
 QtXorArg::description() const
+{
+	return QString::null;
+}
+
+inline QString
+QtXorArg::longDescription() const
 {
 	return QString::null;
 }
@@ -397,6 +446,41 @@ QtXorArg::checkConstraint() const
 		foreach( QtArgIface * arg, m_args )
 			arg->checkConstraint();
 	}
+}
+
+inline QString
+QtXorArg::getUsageString( const NamesList & namesList ) const
+{
+	QString usage;
+
+	usage.append( '{' );
+
+	size_t count = 1;
+
+	foreach( QtArgIface * arg, m_args )
+	{
+		usage.append( arg->getUsageString( namesList ) );
+
+		if( count && count < m_args.size() )
+			usage.append( " | " );
+
+		++count;
+	}
+
+	usage.append( '}' );
+
+	return usage;
+}
+
+inline QString
+QtXorArg::getHelpString( const NamesList & namesList ) const
+{
+	QString help;
+
+	foreach( QtArgIface * arg, m_args )
+		help.append( arg->getHelpString( namesList ) );
+
+	return help;
 }
 
 #endif // QTARG__XORARG_HPP__INCLUDED

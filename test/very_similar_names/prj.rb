@@ -10,7 +10,7 @@ Mxx_ru::Cpp::exe_target {
 
 		qt = generator( MxxRu::Cpp::Qt4.new( self ) )
 
-		target( "test/required_argument/test" )
+		target( "test/very_similar_names/test" )
 
 		cpp_source( "main.cpp" )
 }

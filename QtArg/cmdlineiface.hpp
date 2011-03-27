@@ -5,7 +5,7 @@
 
 	\author Igor P. Mironchik (imironchick at gmail dot com).
 
-	Copyright (c) 2010 Igor P. Mironchik
+	Copyright (c) 2010-2011 Igor P. Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -35,6 +35,8 @@
 
 // Qt include.
 #include <QtCore/QChar>
+#include <QtCore/QList>
+
 
 class QtArgIface;
 
@@ -43,35 +45,88 @@ class QtArgIface;
 // QtArgCmdLineIface
 //
 
-//! Command line arguments parser interface.
+/*!
+	\class QtArgCmdLineIface
+	\brief Command line arguments parser interface.
+
+	This is an interface for command line parser. In usual cases
+	you don't nedd to implement this interface, because there are
+	always ready implementation of this interface that handles
+	various situations.
+
+	\sa QtArgCmdLine
+*/
 class QtArgCmdLineIface {
+	protected:
+		virtual ~QtArgCmdLineIface()
+		{}
+
 	public:
 		//! Type of the list of the arguments in the command line.
 		typedef QList< QtArgIface* > QtArgumentsList;
 
-		virtual ~QtArgCmdLineIface()
-		{}
+		/*!
+			\return List of arguments handled by this command
+			line interface.
 
-		//! \return List of arguments handled by this QtArgCmdLine.
+			\sa QtArgCmdLine::arguments()
+		*/
 		virtual const QtArgumentsList & arguments() const = 0;
 
-		//! \return Delimiter char.
+		/*!
+			\return Delimiter char.
+
+			By default used '-' as delimiter.
+
+			\sa QtArgCmdLine::delimiter()
+		*/
 		virtual const QChar & delimiter() const = 0;
 
-		//! Set delimiter char.
+		/*!
+			Set delimiter char.
+
+			\sa QtArgCmdLine::setDelimiter()
+		*/
 		virtual void setDelimiter( const QChar & delim ) = 0;
 
-		//! Add new argument.
-		//! Can throw exceptions.
+		/*!
+			Add new argument for handling by this command line
+			interface.
+
+			\sa QtArgCmdLine::addArg()
+		*/
 		virtual void addArg( QtArgIface & arg ) = 0;
 
-		//! Add new argument.
-		//! Can throw exceptions.
+		/*!
+			Add new argument for handling by this command line
+			interface.
+
+			\sa QtArgCmdLine::addArg()
+		*/
 		virtual void addArg( QtArgIface * arg ) = 0;
 
-		//! Parse arguments.
-		//! Can throw exceptions.
+		/*!
+			Parse arguments.
+
+			Usually this is very difficult process.
+
+			\sa QtArgCmdLine::parse()
+		*/
 		virtual void parse() = 0;
+
+		/*!
+			\return Is \par str an flag or string of the flags.
+			\retval true if \par str is an flag or string of the flags.
+			\retval false if \par str is not a flag or string of the flags.
+		*/
+		virtual bool isFlag( const QString & str ) const = 0;
+
+		/*!
+			\return Is \par str an argument.
+			\retval true if \par str is an argument.
+			\retval false if \par str is not an argument.
+		*/
+		virtual bool isArgument( const QString & str ) const = 0;
 }; // class QtArgCmdLineIface
 
 #endif // QTARG__CMDLINEIFACE_HPP__INCLUDED

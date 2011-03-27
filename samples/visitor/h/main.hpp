@@ -1,6 +1,8 @@
 
 /*!
 	\file
+	\brief Visitor usage example.
+
 	\author Igor P. Mironchik (imironchick at gmail dot com).
 
 	Copyright (c) 2010-2011 Igor P. Mironchik
@@ -27,65 +29,78 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#ifndef QTARG__SAMPLES__VISITOR__MAIN_HPP__INCLUDED
+#define QTARG__SAMPLES__VISITOR__MAIN_HPP__INCLUDED
+
 // QtArg include.
 #include <QtArg/Arg>
-#include <QtArg/ArgConstraint>
-#include <QtArg/CmdLine>
+#include <QtArg/Visitor>
+#include <QtArg/Exceptions>
 
 // Qt include.
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-
-// unit test helper.
-#include <test/helper/helper.hpp>
+#include <QtCore/QVariant>
 
 
-UNIT_TEST_START
-
-	namespace /* anonymous */ {
-
-		//
-		// TestConstraint
-		//
-
-		class TestConstraint
-			:	public QtArgConstraintIface
-		{
-			public:
-				bool check( const QVariant & value ) const
-				{
-					return ( value.toBool() == false );
-				}
-		}; // class TestConstraint
-
-	} /* namespace anonymous */
+class MyArg;
 
 
-	//
-	// test_constraint
-	//
+//
+// MyArgException
+//
 
-	UNIT_START( test_constraint )
+//! Exception during processing of the argument with the two values??.
+class MyArgException
+	:	public QtArgBaseException
+{
+public:
+	explicit MyArgException( const QString & desc );
+}; // class MyArgException
 
-		const QString argName = QString::fromLatin1( "one" );
 
-		QStringList arguments;
-		arguments << "program" << QString::fromLatin1( "--" ) + argName;
+//
+// MyVisitor
+//
 
-		QtArgCmdLine cmd( arguments );
+//! Visitor for argument with the two values.
+class MyVisitor
+	:	public QtArgVisitorIface
+{
+public:
+	MyVisitor();
 
-		QtArg one( argName );
-		TestConstraint constraint;
-		one.setConstraint( &constraint );
+	//! Set the argument, which belongs to a visitor.
+	void setArg( MyArg * arg );
 
-		cmd.addArg( one );
+	void visit( QtArgCmdLineContext & context );
 
-		CHECK_CONDITION( one.value().toBool() == false )
+private:
+	//! The argument, which belongs to a visitor.
+	MyArg * m_arg;
+}; // class MyVisitor
 
-		CHECK_THROW( QtArgContraintNotObservedEx, cmd.parse(); )
 
-		CHECK_CONDITION( one.value().toBool() == true )
+//
+// MyArg
+//
 
-	UNIT_FINISH( test_constraint )
+//! An argument with the two values.
+class MyArg
+	:	public QtArg
+{
+public:
+	MyArg();
 
-UNIT_TEST_FINISH
+	//! Set second value.
+	void setSecondValue( const QVariant & val );
+
+	//! \return Second value.
+	const QVariant & secondValue() const;
+
+private:
+	//! Visitor.
+	MyVisitor m_visitor;
+	//! Second value for this argument.
+	QVariant m_secondValue;
+}; // class MyArg
+
+#endif // QTARG__SAMPLES__VISITOR__MAIN_HPP__INCLUDED

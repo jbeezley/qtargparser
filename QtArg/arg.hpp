@@ -5,7 +5,7 @@
 
 	\author Igor P. Mironchik (imironchick at gmail dot com).
 
-	Copyright (c) 2010 Igor P. Mironchik
+	Copyright (c) 2010-2011 Igor P. Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -46,6 +46,7 @@
 #include "visitor.hpp"
 #include "argconstraint.hpp"
 #include "cmdlineiface.hpp"
+#include "helpiface.hpp"
 
 
 class QtArgCmdLine;
@@ -96,6 +97,13 @@ class QtArgIface {
 		virtual bool isDefined() const = 0;
 
 		/*!
+			\return Whether this argument should have a value or not.
+			\retval true if this argument should have a value.
+			\retval false if this argument shouldn't have a value.
+		*/
+		virtual bool isWithValue() const = 0;
+
+		/*!
 			Check correctness of the names, flags and so on before parsing.
 
 			Should throw QtArgDissallowedFlagOrNameEx or
@@ -113,19 +121,21 @@ class QtArgIface {
 		virtual void check() const = 0;
 
 		//! \return All flags of the argument.
-		virtual const FlagsList & flags() const
-		{
-			return m_flags;
-		}
+		virtual const FlagsList & flags() const;
 
 		//! \return All names of the argument.
-		virtual const NamesList & names() const
-		{
-			return m_names;
-		}
+		virtual const NamesList & names() const;
 
 		//! \return Description of the argument.
 		virtual QString description() const = 0;
+
+		/*!
+			If long description is empty it's better to return
+			description().
+
+			\return Long descrition for this argument.
+		*/
+		virtual QString longDescription() const = 0;
 
 		/*!
 			\brief Should return pointer to the QtArgIface if this
@@ -161,6 +171,28 @@ class QtArgIface {
 		*/
 		virtual void checkConstraint() const = 0;
 
+		/*!
+			Should return "USAGE" string for this argument.
+			For example: "-a%afterFlags%--arg %value%", where
+			"%value%" is QtArgHelpPrinterIface::argValue and
+			"%afterFlags%" is QtArgHelpPrinterIface::afterFlags.
+
+			\return "USAGE" string for this argument.
+			\par namesList Names of all available arguments.
+		*/
+		virtual QString getUsageString( const NamesList & namesList ) const;
+
+		/*!
+			Should return "HELP" string for this argument.
+
+			For spaces you have to use string constants from
+			QtArgHelpPrinterIface interface.
+
+			\return "HELP" string for this argument.
+			\par namesList Names of all available arguments.
+		*/
+		virtual QString getHelpString( const NamesList & namesList ) const;
+
 	protected:
 		//! Process argument.
 		//! Can throw exceptions.
@@ -176,6 +208,79 @@ class QtArgIface {
 		//! List of the names of the argument.
 		NamesList m_names;
 }; // class QtArgIface
+
+
+//
+// QtArgIface implementation.
+//
+
+inline const QtArgIface::FlagsList &
+QtArgIface::flags() const
+{
+	return m_flags;
+}
+
+inline const QtArgIface::NamesList &
+QtArgIface::names() const
+{
+	return m_names;
+}
+
+inline QString
+QtArgIface::getUsageString( const NamesList & namesList ) const
+{
+	QString usage;
+
+	if( flags().size() )
+	{
+		usage.append( QtArgHelpPrinterIface::beforeFlags );
+		usage.append( QtArgHelpPrinterIface::flagMarker );
+
+		foreach( QChar f, flags() )
+			usage.append( f );
+	}
+
+	if( names().size() )
+	{
+		if( flags().size() )
+			usage.append( QtArgHelpPrinterIface::afterFlags );
+		else
+			usage.append( QtArgHelpPrinterIface::beforeNames );
+
+		bool first = true;
+
+		foreach( QString name, names() )
+		{
+			if( !first )
+				usage.append( QtArgHelpPrinterIface::namesSeparator );
+			else
+				first = false;
+
+			usage.append( QtArgHelpPrinterIface::nameMarker );
+			markUnrequiredPartOfTheName( name, namesList );
+			usage.append( name );
+		}
+
+		if( isWithValue() )
+			usage.append( QtArgHelpPrinterIface::argValue );
+	}
+	else
+		if( isWithValue() )
+			usage.append( QtArgHelpPrinterIface::argValue );
+
+	return usage;
+}
+
+inline QString
+QtArgIface::getHelpString( const NamesList & namesList ) const
+{
+	QString help = getUsageString( namesList );
+	help.append( QtArgHelpPrinterIface::beforeDescription );
+	help.append( description() );
+	help.append( QtArgHelpPrinterIface::newLine );
+
+	return help;
+}
 
 
 //
@@ -326,11 +431,12 @@ class QtArg
 		//! Rewrites previously defined description.
 		void setDescription( const QString & ds );
 
+		//! Set long description for this argument.
+		void setLongDescription( const QString & desc );
+
 		//! Set value of the required property.
 		void setRequired( bool on = true );
 
-		//! \return Whether this argument should have a value or not.
-		bool isWithValue() const;
 		//! Set value of the property that hold whether this argument
 		//! should have a value or not.
 		void setWithValue( bool on = true );
@@ -397,6 +503,13 @@ class QtArg
 			*/
 			virtual bool isDefined() const;
 
+			/*!
+				\return Whether this argument should have a value or not.
+				\retval true if this argument should have a value.
+				\retval false if this argument shouldn't have a value.
+			*/
+			virtual bool isWithValue() const;
+
 			//! \throws QtArgDissallowedFlagOrNameEx if the flag is equal
 			//! to the delimiter or one of the names is empty or equal
 			//! to the space symbol.
@@ -413,6 +526,14 @@ class QtArg
 
 			//! \return Description of the argument.
 			virtual QString description() const;
+
+			/*!
+				If long description is empty it's better to return
+				description().
+
+				\return Long descrition for this argument.
+			*/
+			virtual QString longDescription() const;
 
 			/*!
 				\brief Should return pointer to the QtArgIface if this
@@ -462,6 +583,8 @@ class QtArg
 	private:
 		//! Description of the argument.
 		QString m_description;
+		//! Long description for this argument.
+		QString m_longDescription;
 
 		//! Is argument required?
 		bool m_required;
@@ -712,6 +835,17 @@ QtArg::setDescription( const QString & ds )
 	m_description = ds;
 }
 
+inline QString
+QtArg::longDescription() const
+{
+	return m_longDescription;
+}
+
+inline void
+QtArg::setLongDescription( const QString & desc )
+{
+	m_longDescription = desc;
+}
 
 inline bool
 QtArg::isRequired() const
@@ -867,7 +1001,7 @@ QtArg::check(
 		foreach( QString name, m_names )
 		{
 			if( name.isEmpty() ||
-				name.contains( QRegExp( QString::fromLatin1( "\\s" ) ) ) )
+				name.contains( QRegExp( QLatin1String( "\\s" ) ) ) )
 					throw QtArgDissallowedFlagOrNameEx(
 						QString::fromLatin1( "Dissallowed name: \"%1\"." )
 							.arg( name ) );
@@ -936,6 +1070,7 @@ QtArg::checkConstraint() const
 					.arg( names().size() ? names().front() : flags().front() )
 					.arg( m_value.toString() ) );
 }
+
 
 namespace /* anonymous */ {
 

@@ -5,7 +5,7 @@
 
 	\author Igor P. Mironchik (imironchick at gmail dot com).
 
-	Copyright (c) 2010 Igor P. Mironchik
+	Copyright (c) 2010-2011 Igor P. Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -34,9 +34,59 @@
 
 // Qt include.
 #include <QtCore/QString>
+#include <QtCore/QStringList>
 
 // QtArg include.
-#include "arg.hpp"
+//#include "arg.hpp"
+
+
+//
+// isUnique
+//
+
+//! \return Is name \par name unique in names \par list.
+inline bool
+isUnique( const QString & name, const QStringList & list )
+{
+	bool contains = false;
+
+	foreach( QString n, list )
+		if( n.startsWith( name ) )
+		{
+			if( !contains )
+				contains = true;
+			else
+				return false;
+		}
+
+	return true;
+} // isUnique
+
+
+//
+// markUnrequiredPartOfTheName
+//
+
+/*!
+	Mark unrequired part of the name with '[' and ']'
+	characters.
+*/
+inline void
+markUnrequiredPartOfTheName( QString & name,
+	const QStringList & rawNames )
+{
+	int index = 1;
+
+	while( !isUnique( name.left( index ), rawNames )
+		&& index < name.length() )
+			++index;
+
+	if( index != name.length() )
+	{
+		name.insert( index, '[' );
+		name.append( ']' );
+	}
+} // markUnrequiredPartOfTheName
 
 
 //
@@ -49,32 +99,66 @@ class QtArgHelpPrinterIface {
 		virtual ~QtArgHelpPrinterIface() {}
 
 	public:
-		//! Print help on the specified argument.
-		virtual void print( const QtArgIface * arg,
-			const QChar & delimiter ) = 0;
+		//! Print help.
+		virtual void print() const = 0;
 
-		//! Print string \par str.
-		virtual void print( const QString & str ) const = 0;
+		/*!
+			Set program description that will be used
+			as first line in the help.
+		*/
+		virtual void setProgramDescription( const QString & desc ) = 0;
 
-		//! Flush help into the out stream;
-		virtual void flush( const QChar & delimite ) = 0;
+		/*!
+			Set executable name that defined in argv[0]
+			or something else.
+		*/
+		virtual void setExecutableName( const QString & exec ) = 0;
+
+		/*!
+			Set "USAGE" string.
+		*/
+		virtual void setUsageString( const QString & usage ) = 0;
+
+		/*!
+			Set "HELP" string.
+		*/
+		virtual void setHelpString( const QString & help ) = 0;
+
+		/*!
+			Set delimiter character.
+		*/
+		virtual void setDelimiterChar( const QChar & delim ) = 0;
 
 	public:
 		/*!
 			\name This constants will be replaced with
-			correct spaces.
+			correct spaces, commas and so on.
 
-			\li beforeFlags - space before flags.
+			\li beforeFlags - space before flags. Usually it's a
+				constant, somewhere 1 blank space.
 
 			\li afterFlags - space after flags and ','.
+				This is a variable length blank space with comma.
+				It may looks like this: ", ". The length of blank
+				space depends on max length of the flags string
+				and argValue length if it presents. argValue will
+				present after flags string if there is no argument's
+				names for this argument.
 
-			\li afterNames - space after names.
+			\li namesSeparator - String between names. It can be
+				like this one: ", ".
 
 			\li beforeNames - space before names. Equals to
-			beforeFlags + longest flags.
+				beforeFlags + longest flags string. This constant
+				should be used if argument doesn't have any flags
+				and only names. This guarantee that names will
+				shown in necessary column.
 
-			\li beforeDescription - space before description. Equals to
-			beforeNames + longest names.
+			\li beforeDescription - space before description.
+
+			\li flagMarker - is a character used to specify flag.
+
+			\li nameMarker - is a doubled flagMarker.
 		*/
 		//! \{
 
@@ -82,39 +166,49 @@ class QtArgHelpPrinterIface {
 
 			static const QString afterFlags;
 
-			static const QString afterNames;
+			static const QString namesSeparator;
 
 			static const QString beforeNames;
 
 			static const QString beforeDescription;
 
+			static const QString flagMarker;
+
+			static const QString nameMarker;
+
 		//! \}
 
 		//! New line in help string.
 		static const QString newLine;
-		//! String with names of the argument.
-		static const QString namesString;
+		//! String with value of the argument.
+		static const QString argValue;
 }; // class QtArgHelpPrinterIface
 
 const QString QtArgHelpPrinterIface::beforeFlags =
-	QString::fromLatin1( "%beforeFlags%" );
+	QLatin1String( "%beforeFlags%" );
 
 const QString QtArgHelpPrinterIface::afterFlags =
-	QString::fromLatin1( "%afterFlags%" );
+	QLatin1String( "%afterFlags%" );
 
-const QString QtArgHelpPrinterIface::afterNames =
-	QString::fromLatin1( "%afterNames%" );
+const QString QtArgHelpPrinterIface::namesSeparator =
+	QLatin1String( "%namesSeparator%" );
 
 const QString QtArgHelpPrinterIface::beforeNames =
-	QString::fromLatin1( "%beforeNames%" );
+	QLatin1String( "%beforeNames%" );
 
 const QString QtArgHelpPrinterIface::beforeDescription =
-	QString::fromLatin1( "%beforeDescription%" );
+	QLatin1String( "%beforeDescription%" );
 
 const QString QtArgHelpPrinterIface::newLine =
-	QString::fromLatin1( "%newLine%" );
+	QLatin1String( "%newLine%" );
 
-const QString QtArgHelpPrinterIface::namesString =
-	QString::fromLatin1( "%namesString%" );
+const QString QtArgHelpPrinterIface::argValue =
+	QLatin1String( "%value%" );
+
+const QString QtArgHelpPrinterIface::flagMarker =
+	QLatin1String( "%flagMarker%" );
+
+const QString QtArgHelpPrinterIface::nameMarker =
+	QLatin1String( "%nameMarker%" );
 
 #endif // QTARG__HELPIFACE_HPP__INCLUDED

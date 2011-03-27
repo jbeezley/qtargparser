@@ -5,7 +5,7 @@
 
 	\author Igor P. Mironchik (imironchick at gmail dot com).
 
-	Copyright (c) 2010 Igor P. Mironchik
+	Copyright (c) 2010-2011 Igor P. Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -44,7 +44,11 @@ class QtArgCmdLine;
 // QtArgCmdLineContext
 //
 
-//! Context of the command line.
+/*!
+	\class QtArgCmdLineContext
+
+	\brief Context of the command line.
+*/
 class QtArgCmdLineContext {
 
 		friend class QtArgCmdLine;

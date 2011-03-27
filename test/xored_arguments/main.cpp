@@ -3,7 +3,7 @@
 	\file
 	\author Igor P. Mironchik (imironchick at gmail dot com).
 
-	Copyright (c) 2010 Igor P. Mironchik
+	Copyright (c) 2010-2011 Igor P. Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -108,7 +108,7 @@ UNIT_TEST_START
 		QtArg one( "one", QString(), true );
 		QtArg two( "two" );
 
-		CHECK_THROW( QtRequiredArgumentUnderXORMaskEx,
+		CHECK_THROW( QtArgRequiredArgumentUnderXORMaskEx,
 			QtXorArg xored( one, two, "xored" ); )
 
 	UNIT_FINISH( test_adding_required_arg_under_xor_must_fail )
