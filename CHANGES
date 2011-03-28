@@ -24,6 +24,9 @@ version 1.1.0 (2011.03.28)
     It's very important if you implement you own help systems or help printer.
   * QtRequiredArgumentUnderXORMaskEx was renamed to QtArgRequiredArgumentUnderXORMaskEx.
 
+  Greet thanks to Lapshin Pavel and Aleksey Timofeyev for the help and ideas to this
+  version of the QtArg.
+
 version 1.0.4 (2010.10.08)
 
   * Correctness of the exceptions.
