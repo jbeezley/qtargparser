@@ -453,9 +453,7 @@ QtXorArg::getUsageString( const NamesList & namesList ) const
 {
 	QString usage;
 
-	usage.append( '{' );
-
-	size_t count = 1;
+	int count = 1;
 
 	foreach( QtArgIface * arg, m_args )
 	{
@@ -466,8 +464,6 @@ QtXorArg::getUsageString( const NamesList & namesList ) const
 
 		++count;
 	}
-
-	usage.append( '}' );
 
 	return usage;
 }

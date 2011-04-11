@@ -44,26 +44,6 @@
 #include "xorarg.hpp"
 #include "multiarg.hpp"
 
-#include <iostream>
-
-
-//
-// QtArgHelpHasPrintedEx
-//
-
-//! Throws when help has been printed.
-class QtArgHelpHasPrintedEx
-	:	public QtArgBaseException
-{
-	public:
-		QtArgHelpHasPrintedEx()
-			:	QtArgBaseException( QString::null )
-		{}
-
-		virtual ~QtArgHelpHasPrintedEx() throw()
-		{}
-}; // class QtArgHelpHasPrintedEx
-
 
 //
 // QtArgDefaultHelpPrinter
@@ -526,7 +506,6 @@ QtArgHelp::QtArgHelp( QtArgCmdLine * cmdLine )
 	,	m_printer( QtArgDefaultHelpPrinter::instance() )
 	,	m_cmdLine( cmdLine )
 {
-	initNames( m_cmdLine->arguments() );
 }
 
 inline
@@ -573,7 +552,7 @@ QtArgHelp::createUsageStringForArgs( QString & usage,
 	const QtArgCmdLineIface::QtArgumentsList & args,
 	const QChar & before, const QChar & after )
 {
-	size_t count = 1;
+	int count = 1;
 
 	if( usage.length() )
 		usage.append( ' ' );
@@ -691,6 +670,8 @@ QtArgHelp::printHelp( const QString & argName )
 inline void
 QtArgHelp::visit( QtArgCmdLineContext & context )
 {
+	initNames( m_cmdLine->arguments() );
+
 	if( !context.atEnd() )
 	{
 		QString argName = context.next();

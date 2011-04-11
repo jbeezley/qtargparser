@@ -55,8 +55,9 @@ class QtArgCmdLine;
 // class QtArgIface
 //
 
-//! Interface of the argument.
 /*!
+	Interface of the argument.
+
 	Should be implemented by every class wanted
 	to be an argument.
 */
@@ -74,7 +75,10 @@ class QtArgIface {
 		QtArgIface()
 		{}
 
-		QtArgIface( const NamesList & names,
+		QtArgIface(
+			//! Names of the argument.
+			const NamesList & names,
+			//! Flags of the argument.
 			const FlagsList & flags )
 			:	m_flags( flags )
 			,	m_names( names )
@@ -85,14 +89,16 @@ class QtArgIface {
 
 	public:
 		/*!
+			\return Is this argument required?
 			\retval true if argument is required.
-			\retval false otherwise.
+			\retval false of argument isn't required.
 		*/
 		virtual bool isRequired() const = 0;
 
 		/*!
-			\retval true if argument has decided he gas been defined.
-			\retval false otherwise.
+			\return Is this argument defined in command line?
+			\retval true if argument has decided he has been defined.
+			\retval false if argument hasn't decided he has been defined..
 		*/
 		virtual bool isDefined() const = 0;
 

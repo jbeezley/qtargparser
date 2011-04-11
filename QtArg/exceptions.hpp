@@ -217,4 +217,22 @@ class QtArgContraintNotObservedEx
 		{}
 }; // class QtArgContraintNotObservedEx
 
+
+//
+// QtArgHelpHasPrintedEx
+//
+
+//! Throws when help has been printed.
+class QtArgHelpHasPrintedEx
+	:	public QtArgBaseException
+{
+	public:
+		QtArgHelpHasPrintedEx()
+			:	QtArgBaseException( QString::null )
+		{}
+
+		virtual ~QtArgHelpHasPrintedEx() throw()
+		{}
+}; // class QtArgHelpHasPrintedEx
+
 #endif // QTARG__EXCEPTIONS_HPP__INCLUDED

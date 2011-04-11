@@ -36,9 +36,6 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
-// QtArg include.
-//#include "arg.hpp"
-
 
 //
 // isUnique
