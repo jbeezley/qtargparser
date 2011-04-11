@@ -1,4 +1,9 @@
 
+version 1.1.1 (2011.04.11)
+
+ * Bug fixing: marking of the unrequired part of the name didn't work.
+ * Removed '{' and '}' before and after XOR argument in usage string.
+
 version 1.1.0 (2011.03.28)
 
   * QtArgIface was expanded with new methods:
@@ -24,7 +29,7 @@ version 1.1.0 (2011.03.28)
     It's very important if you implement you own help systems or help printer.
   * QtRequiredArgumentUnderXORMaskEx was renamed to QtArgRequiredArgumentUnderXORMaskEx.
 
-  Greet thanks to Lapshin Pavel and Aleksey Timofeyev for the help and ideas to this
+  Greet thanks to Pavel Lapshin and Aleksey Timofeyev for the help and ideas to this
   version of the QtArg.
 
 version 1.0.4 (2010.10.08)
