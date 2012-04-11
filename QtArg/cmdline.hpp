@@ -1,11 +1,12 @@
 
 /*!
 	\file
+
 	\brief Command Line Parser.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2010-2011 Igor P. Mironchik
+	Copyright (c) 2010-2012 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -52,7 +53,10 @@
 // QtArgCmdLine
 //
 
-//! Command line arguments parser.
+/*!
+	\class QtArgCmdLine
+	\brief Command line arguments parser.
+*/
 class QtArgCmdLine
 	:	public QtArgCmdLineIface
 {
@@ -105,7 +109,7 @@ class QtArgCmdLine
 
 		//! Parse arguments.
 		//! Can throw exceptions.
-		void parse();
+		void parse( bool parseAfterIgnoreRest = false );
 
 		/*!
 			\return Is \par str an flag or string of the flags.
@@ -238,7 +242,7 @@ QtArgCmdLine::addArg( QtArgIface * arg )
 }
 
 inline void
-QtArgCmdLine::parse()
+QtArgCmdLine::parse( bool parseAfterIgnoreRest )
 {
 	checkArgumentsCorrectness();
 
@@ -264,6 +268,14 @@ QtArgCmdLine::parse()
 
 		if( isArgument( arg ) )
 		{
+			if( nameWithoutDelims.isEmpty() )
+			{
+				if( !parseAfterIgnoreRest )
+					return;
+				else
+					continue;
+			}
+
 			QtArgIface * argument = findArgument( nameWithoutDelims );
 			lastArgNameOrFlag = name;
 

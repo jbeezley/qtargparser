@@ -1,11 +1,12 @@
 
 /*!
 	\file
+
 	\brief Command Line Parser Context.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2010-2011 Igor P. Mironchik
+	Copyright (c) 2010-2012 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -63,6 +64,13 @@ class QtArgCmdLineContext {
 			return ( m_current == m_argv.end() );
 		}
 
+		//! \retval true if context is at the begin.
+		//! \retval false if context isn't at the begin.
+		bool atBegin() const
+		{
+			return ( m_current == m_argv.begin() );
+		}
+
 		//! \return Next argument at command line.
 		//! \retval Null QString if there are no more arguments at command line.
 		const QString & next()
@@ -71,6 +79,15 @@ class QtArgCmdLineContext {
 				return m_null;
 
 			return ( *( m_current++ ) );
+		}
+
+		//! Put back previous argument to the context.
+		void putBack()
+		{
+			if( atBegin() )
+				return;
+			else
+				--m_current;
 		}
 
 	protected:

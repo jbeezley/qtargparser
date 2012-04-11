@@ -1,11 +1,12 @@
 
 /*!
 	\file
+
 	\brief Command line argument with multiply values.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2010-2011 Igor P. Mironchik
+	Copyright (c) 2010-2012 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -152,6 +153,9 @@ class QtMultiArg
 
 		virtual ~QtMultiArg();
 
+		//! \return Count of defined arguments.
+		int count() const;
+
 		//! Set value of the argument.
 		virtual void setValue( const QVariant & v );
 
@@ -176,7 +180,23 @@ class QtMultiArg
 			*/
 			virtual QString getHelpString( const NamesList & namesList ) const;
 
+	protected:
+			/*!
+				\brief Process argument.
+
+				Can throw exceptions.
+
+				\return The number of processed arguments.
+			*/
+			virtual int process(
+				//! Command line context.
+				QtArgCmdLineContext & context );
+
 		//! \}
+
+	private:
+		//! Count of defined arguments.
+		int m_count;
 }; // class QtMultiArg
 
 
@@ -195,6 +215,7 @@ QtMultiArg::QtMultiArg(
 	QtArgConstraintIface * constraint )
 		:	QtArg( flag, name, description,
 				   required, withValue, visitor, constraint )
+		,	m_count( 0 )
 {
 }
 
@@ -209,6 +230,7 @@ QtMultiArg::QtMultiArg(
 	QtArgConstraintIface * constraint )
 		:	QtArg( flag, names, description,
 				   required, withValue, visitor, constraint )
+		,	m_count( 0 )
 {
 }
 
@@ -222,6 +244,7 @@ QtMultiArg::QtMultiArg(
 	QtArgConstraintIface * constraint )
 		:	QtArg( name, description,
 				   required, withValue, visitor, constraint )
+		,	m_count( 0 )
 {
 }
 
@@ -235,6 +258,7 @@ QtMultiArg::QtMultiArg(
 	QtArgConstraintIface * constraint )
 		:	QtArg( names, description,
 				   required, withValue, visitor, constraint )
+		,	m_count( 0 )
 {
 }
 
@@ -248,6 +272,7 @@ QtMultiArg::QtMultiArg(
 	QtArgConstraintIface * constraint )
 		:	QtArg( flags, description,
 				   required, withValue, visitor, constraint )
+		,	m_count( 0 )
 {
 }
 
@@ -262,6 +287,7 @@ QtMultiArg::QtMultiArg(
 	QtArgConstraintIface * constraint )
 		:	QtArg( flags, names, description,
 				   required, withValue, visitor, constraint )
+		,	m_count( 0 )
 {
 }
 
@@ -296,6 +322,12 @@ QtMultiArg::operator = ( const QtMultiArg & arg )
 inline
 QtMultiArg::~QtMultiArg()
 {
+}
+
+inline int
+QtMultiArg::count() const
+{
+	return m_count;
 }
 
 inline void
@@ -334,6 +366,48 @@ QtMultiArg::getHelpString( const NamesList & namesList ) const
 	help.append( QtArgHelpPrinterIface::newLine );
 
 	return help;
+}
+
+inline int
+QtMultiArg::process( QtArgCmdLineContext & context )
+{
+	if( isWithValue() )
+	{
+		++m_count;
+
+		return QtArg::process( context );
+	}
+	else
+	{
+		bool ok = false;
+		int intValue = 0;
+
+		if( !context.atEnd() )
+		{
+			const QString value = context.next();
+			intValue = value.toInt( &ok );
+
+			if( !ok )
+				context.putBack();
+		}
+
+		if( ok )
+			m_count += intValue;
+		else
+			++m_count;
+
+		setPresent( true );
+
+		if( !isDefined() )
+		{
+			setValue( QVariant( true ) );
+			setDefined( true );
+		}
+
+		return 1;
+	}
+
+	return 0;
 }
 
 #endif // QTARG__MULTIARG_HPP__INCLUDED

@@ -1,9 +1,10 @@
 
 /*!
 	\file
-	\author Igor P. Mironchik (imironchick at gmail dot com).
 
-	Copyright (c) 2010-2011 Igor P. Mironchik
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
+
+	Copyright (c) 2010-2012 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -69,7 +70,143 @@ UNIT_TEST_START
 
 		CHECK_CONDITION ( one.value().toList().front().toString() == firstValue )
 		CHECK_CONDITION ( one.value().toList().back().toString() == secondValue )
+		CHECK_CONDITION( one.count() == 2 )
 
 	UNIT_FINISH( test_multiarg )
+
+
+	//
+	// test_count_in_multiarg_1
+	//
+
+	UNIT_START( test_count_in_multiarg_1 )
+
+		QStringList arguments;
+		arguments << "program" << "-a" << "-a";
+
+		QtArgCmdLine cmd( arguments );
+
+		QtMultiArg one( 'a' );
+
+		cmd.addArg( one );
+
+		CHECK_CONDITION( one.value().toList().size() == 0 )
+
+		cmd.parse();
+
+		CHECK_CONDITION( one.value().toList().size() == 1 )
+		CHECK_CONDITION( one.value().toList().front().toBool() == true )
+		CHECK_CONDITION( one.isDefined() == true )
+		CHECK_CONDITION( one.count() == 2 )
+
+	UNIT_FINISH( test_count_in_multiarg_1 )
+
+
+	//
+	// test_count_in_multiarg_2
+	//
+
+	UNIT_START( test_count_in_multiarg_2 )
+
+		QStringList arguments;
+		arguments << "program" << "-a" << "-a";
+
+		QtArgCmdLine cmd( arguments );
+
+		QtMultiArg one( 'a' );
+
+		cmd.addArg( one );
+
+		CHECK_CONDITION( one.value().toList().size() == 0 )
+
+		cmd.parse();
+
+		CHECK_CONDITION( one.value().toList().size() == 1 )
+		CHECK_CONDITION( one.value().toList().front().toBool() == true )
+		CHECK_CONDITION( one.isDefined() == true )
+		CHECK_CONDITION( one.count() == 2 )
+
+	UNIT_FINISH( test_count_in_multiarg_2 )
+
+
+	//
+	// test_count_in_multiarg_3
+	//
+
+	UNIT_START( test_count_in_multiarg_3 )
+
+		QStringList arguments;
+		arguments << "program" << "-a" << "3";
+
+		QtArgCmdLine cmd( arguments );
+
+		QtMultiArg one( 'a' );
+
+		cmd.addArg( one );
+
+		CHECK_CONDITION( one.value().toList().size() == 0 )
+
+		cmd.parse();
+
+		CHECK_CONDITION( one.value().toList().size() == 1 )
+		CHECK_CONDITION( one.value().toList().front().toBool() == true )
+		CHECK_CONDITION( one.isDefined() == true )
+		CHECK_CONDITION( one.count() == 3 )
+
+	UNIT_FINISH( test_count_in_multiarg_3 )
+
+
+	//
+	// test_count_in_multiarg_4
+	//
+
+	UNIT_START( test_count_in_multiarg_4 )
+
+		QStringList arguments;
+		arguments << "program" << "-a4";
+
+		QtArgCmdLine cmd( arguments );
+
+		QtMultiArg one( 'a' );
+
+		cmd.addArg( one );
+
+		CHECK_CONDITION( one.value().toList().size() == 0 )
+
+		cmd.parse();
+
+		CHECK_CONDITION( one.value().toList().size() == 1 )
+		CHECK_CONDITION( one.value().toList().front().toBool() == true )
+		CHECK_CONDITION( one.isDefined() == true )
+		CHECK_CONDITION( one.count() == 4 )
+
+	UNIT_FINISH( test_count_in_multiarg_4 )
+
+
+	//
+	// test_count_in_multiarg_5
+	//
+
+	UNIT_START( test_count_in_multiarg_5 )
+
+		QStringList arguments;
+		arguments << "program" << "-a=5";
+
+		QtArgCmdLine cmd( arguments );
+
+		QtMultiArg one( 'a' );
+
+		cmd.addArg( one );
+
+		CHECK_CONDITION( one.value().toList().size() == 0 )
+
+		cmd.parse();
+
+		CHECK_CONDITION( one.value().toList().size() == 1 )
+		CHECK_CONDITION( one.value().toList().front().toBool() == true )
+		CHECK_CONDITION( one.isDefined() == true )
+		CHECK_CONDITION( one.count() == 5 )
+
+	UNIT_FINISH( test_count_in_multiarg_5 )
 
 UNIT_TEST_FINISH

@@ -1,9 +1,10 @@
 
 /*!
 	\file
-	\author Igor P. Mironchik (imironchick at gmail dot com).
 
-	Copyright (c) 2010-2011 Igor P. Mironchik
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
+
+	Copyright (c) 2010-2012 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -171,5 +172,69 @@ UNIT_TEST_START
 	CHECK_CONDITION( i.value().toString() == "5" )
 
 	UNIT_FINISH( test_complex_3 )
+
+
+	//
+	// test_complex_4
+	//
+
+	UNIT_START( test_complex_4 )
+
+	QStringList arguments;
+	arguments << "test" << "-a" << "1" << "-b=2"
+		<< "-c3" << "-d" << "4";
+
+	QtArgCmdLine cmd( arguments );
+
+	QtArg a( 'a', QString(), QString(), false, true );
+	QtArg b( 'b', QString(), QString(), false, true );
+	QtArg c( 'c', QString(), QString(), false, true );
+	QtArg d( 'd', QString(), QString(), false, true );
+
+	cmd.addArg( a );
+	cmd.addArg( b );
+	cmd.addArg( c );
+	cmd.addArg( d );
+
+	cmd.parse();
+
+	CHECK_CONDITION( a.value().toString() == "1" )
+	CHECK_CONDITION( b.value().toString() == "2" )
+	CHECK_CONDITION( c.value().toString() == "3" )
+	CHECK_CONDITION( d.value().toString() == "4" )
+
+	UNIT_FINISH( test_complex_4 )
+
+
+	//
+	// test_complex_5
+	//
+
+	UNIT_START( test_complex_5 )
+
+	QStringList arguments;
+	arguments << "test" << "--a1" << "1" << "--b2=2"
+		<< "--c3=3" << "--d4" << "4";
+
+	QtArgCmdLine cmd( arguments );
+
+	QtArg a( QString::fromLatin1( "a1" ), QString(), false, true );
+	QtArg b( QString::fromLatin1( "b2" ), QString(), false, true );
+	QtArg c( QString::fromLatin1( "c3" ), QString(), false, true );
+	QtArg d( QString::fromLatin1( "d4" ), QString(), false, true );
+
+	cmd.addArg( a );
+	cmd.addArg( b );
+	cmd.addArg( c );
+	cmd.addArg( d );
+
+	cmd.parse();
+
+	CHECK_CONDITION( a.value().toString() == "1" )
+	CHECK_CONDITION( b.value().toString() == "2" )
+	CHECK_CONDITION( c.value().toString() == "3" )
+	CHECK_CONDITION( d.value().toString() == "4" )
+
+	UNIT_FINISH( test_complex_5 )
 
 UNIT_TEST_FINISH

@@ -18,4 +18,5 @@ MxxRu::Cpp::composite_target() {
 		required_prj( "test/constraint/prj.ut.rb" )
 		required_prj( "test/complex/prj.ut.rb" )
 		required_prj( "test/very_similar_names/prj.ut.rb" )
+		required_prj( "test/ignore_rest/prj.ut.rb" )
 }

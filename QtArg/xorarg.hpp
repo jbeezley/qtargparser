@@ -1,11 +1,12 @@
 
 /*!
 	\file
+
 	\brief Command line argument with under the XOR mask.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2010-2011 Igor P. Mironchik
+	Copyright (c) 2010-2012 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation

@@ -1,11 +1,12 @@
 
 /*!
 	\file
+
 	\brief Help printer.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2010-2011 Igor P. Mironchik
+	Copyright (c) 2010-2012 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -41,7 +42,7 @@
 // isUnique
 //
 
-//! \return Is name \par name unique in names \par list.
+//! \return Is name \a name unique in names \a list.
 inline bool
 isUnique( const QString & name, const QStringList & list )
 {
@@ -69,7 +70,10 @@ isUnique( const QString & name, const QStringList & list )
 	characters.
 */
 inline void
-markUnrequiredPartOfTheName( QString & name,
+markUnrequiredPartOfTheName(
+	//! Name to mark unrequired part.
+	QString & name,
+	//! All available names.
 	const QStringList & rawNames )
 {
 	int index = 1;
@@ -90,7 +94,10 @@ markUnrequiredPartOfTheName( QString & name,
 // QtArgHelpPrinterIface
 //
 
-//! Interface for the help printer.
+/*!
+	\class QtArgHelpPrinterIface
+	\brief Interface for the help printer.
+*/
 class QtArgHelpPrinterIface {
 	protected:
 		virtual ~QtArgHelpPrinterIface() {}
@@ -128,56 +135,62 @@ class QtArgHelpPrinterIface {
 
 	public:
 		/*!
-			\name This constants will be replaced with
-			correct spaces, commas and so on.
+			\brief Space before flags.
 
-			\li beforeFlags - space before flags. Usually it's a
-				constant, somewhere 1 blank space.
-
-			\li afterFlags - space after flags and ','.
-				This is a variable length blank space with comma.
-				It may looks like this: ", ". The length of blank
-				space depends on max length of the flags string
-				and argValue length if it presents. argValue will
-				present after flags string if there is no argument's
-				names for this argument.
-
-			\li namesSeparator - String between names. It can be
-				like this one: ", ".
-
-			\li beforeNames - space before names. Equals to
-				beforeFlags + longest flags string. This constant
-				should be used if argument doesn't have any flags
-				and only names. This guarantee that names will
-				shown in necessary column.
-
-			\li beforeDescription - space before description.
-
-			\li flagMarker - is a character used to specify flag.
-
-			\li nameMarker - is a doubled flagMarker.
+			Usually it's a constant, somewhere 1 blank space.
 		*/
-		//! \{
+		static const QString beforeFlags;
 
-			static const QString beforeFlags;
+		/*!
+			\brief Space after flags and ','.
 
-			static const QString afterFlags;
+			This is a variable length blank space with comma.
+			It may looks like this: ", ". The length of blank
+			space depends on max length of the flags string
+			and argValue length if it presents. argValue will
+			present after flags string if there is no argument's
+			names for this argument.
+		*/
+		static const QString afterFlags;
 
-			static const QString namesSeparator;
+		/*!
+			\brief String between names.
 
-			static const QString beforeNames;
+			It can be like this one: ", ".
+		*/
+		static const QString namesSeparator;
 
-			static const QString beforeDescription;
+		/*!
+			\brief Space before names.
 
-			static const QString flagMarker;
+			Equals to beforeFlags + longest flags string. This constant
+			should be used if argument doesn't have any flags
+			and only names. This guarantee that names will
+			shown in necessary column.
+		*/
+		static const QString beforeNames;
 
-			static const QString nameMarker;
+		/*!
+			Space before description.
 
-		//! \}
+			Usually used after names or flags.
+		*/
+		static const QString beforeDescription;
+
+		//! Is a character used to specify flag.
+		static const QString flagMarker;
+
+		//! Is a doubled flagMarker.
+		static const QString nameMarker;
 
 		//! New line in help string.
 		static const QString newLine;
-		//! String with value of the argument.
+
+		/*!
+			String with value of the argument.
+
+			Usually it's a "<arg>".
+		*/
 		static const QString argValue;
 }; // class QtArgHelpPrinterIface
 

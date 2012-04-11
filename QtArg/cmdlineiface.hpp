@@ -1,11 +1,12 @@
 
 /*!
 	\file
+
 	\brief Command Line Parser.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2010-2011 Igor P. Mironchik
+	Copyright (c) 2010-2012 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -112,7 +113,7 @@ class QtArgCmdLineIface {
 
 			\sa QtArgCmdLine::parse()
 		*/
-		virtual void parse() = 0;
+		virtual void parse( bool parseAfterIgnoreRest = false ) = 0;
 
 		/*!
 			\return Is \par str an flag or string of the flags.

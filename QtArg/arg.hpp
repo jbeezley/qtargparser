@@ -1,11 +1,12 @@
 
 /*!
 	\file
+
 	\brief Command Line Argument.
 
-	\author Igor P. Mironchik (imironchick at gmail dot com).
+	\author Igor Mironchik (igor.mironchik at gmail dot com).
 
-	Copyright (c) 2010-2011 Igor P. Mironchik
+	Copyright (c) 2010-2012 Igor Mironchik
 
 	Permission is hereby granted, free of charge, to any person
 	obtaining a copy of this software and associated documentation
@@ -56,7 +57,8 @@ class QtArgCmdLine;
 //
 
 /*!
-	Interface of the argument.
+	\class QtArgIface
+	\brief Interface of the argument.
 
 	Should be implemented by every class wanted
 	to be an argument.
@@ -91,7 +93,7 @@ class QtArgIface {
 		/*!
 			\return Is this argument required?
 			\retval true if argument is required.
-			\retval false of argument isn't required.
+			\retval false if argument isn't required.
 		*/
 		virtual bool isRequired() const = 0;
 
@@ -112,15 +114,15 @@ class QtArgIface {
 		/*!
 			Check correctness of the names, flags and so on before parsing.
 
-			Should throw QtArgDissallowedFlagOrNameEx or
-			QtArgNameOrFlagAlreadyKnownEx on errors.
+			\throw QtArgDissallowedFlagOrNameEx
+			\throw QtArgNameOrFlagAlreadyKnownEx
 		*/
 		virtual void check(
-			//! Delimiter.
+			//! Delimiter character.
 			const QChar & delimiter,
-			//! Already known flags.
+			//! All known flags in every argument.
 			FlagsList & alreadyKnownFlags,
-			//! Already known names.
+			//! All known names in every argument.
 			NamesList & alreadyKnownNames ) const = 0;
 
 		//! Check correctness of the state of the argument after parsing.
@@ -146,33 +148,52 @@ class QtArgIface {
 		/*!
 			\brief Should return pointer to the QtArgIface if this
 			argument know how to do it, usually returns "this" if he does.
+			If this argument handles another arguments with flag \a flag
+			than he should return pointer to this argument.
 
 			\retval Pointer to the QtArgIface if flag \a flag determines
 			this argument.
 			\retval NULL if flag \a flag doesn't determine this argument.
 		*/
-		virtual QtArgIface * giveArgument( const QChar & flag ) = 0;
+		virtual QtArgIface * giveArgument(
+			/*!
+				Is a flag that returned argument should own. If
+				this argument doesn't own this flag or sub-arguments don't
+				own this flag then returned value should be null-pointer.
+			*/
+			const QChar & flag ) = 0;
 
 		/*!
 			\brief Should return pointer to the QtArgIface if this
 			argument know how to do it, usually returns "this" if he does.
+			If this argument handles another arguments with name \a name
+			than he should return pointer to this argument.
 
 			\retval Pointer to the QtArgIface if name \a name determines
 			this argument.
 			\retval NULL if name \a name doesn't determine this argument.
 		*/
-		virtual QtArgIface * giveArgument( const QString & name ) = 0;
+		virtual QtArgIface * giveArgument(
+			/*!
+				Is a name that returned argument should own. If
+				this argument doesn't own this name or sub-arguments don't
+				own this name then returned value should be null-pointer.
+			*/
+			const QString & name ) = 0;
 
-		//! \return List of the arguments handled by this argument.
 		/*!
-			Usually returns list with "this" pointer.
+			\brief Usually returns list with "this" pointer or list
+			with all handled arguments.
+
+			\return List of the arguments handled by this argument.
 		*/
 		virtual const QtArgCmdLineIface::QtArgumentsList &
 		arguments() const = 0;
 
-		//! Check corrcetness of the argument constraint.
 		/*!
-			Should throw QtArgContraintNotObservedEx if constraint
+			\brief Check correctness of the argument constraint.
+
+			\throw QtArgContraintNotObservedEx if constraint
 			didn't observed.
 		*/
 		virtual void checkConstraint() const = 0;
@@ -184,9 +205,10 @@ class QtArgIface {
 			"%afterFlags%" is QtArgHelpPrinterIface::afterFlags.
 
 			\return "USAGE" string for this argument.
-			\par namesList Names of all available arguments.
 		*/
-		virtual QString getUsageString( const NamesList & namesList ) const;
+		virtual QString getUsageString(
+			//! Names of all available arguments.
+			const NamesList & namesList ) const;
 
 		/*!
 			Should return "HELP" string for this argument.
@@ -195,18 +217,27 @@ class QtArgIface {
 			QtArgHelpPrinterIface interface.
 
 			\return "HELP" string for this argument.
-			\par namesList Names of all available arguments.
 		*/
-		virtual QString getHelpString( const NamesList & namesList ) const;
+		virtual QString getHelpString(
+			//! Names of all available arguments.
+			const NamesList & namesList ) const;
 
 	protected:
-		//! Process argument.
-		//! Can throw exceptions.
-		//! \return The number of processed arguments.
-		virtual int process( QtArgCmdLineContext & context ) = 0;
+		/*!
+			\brief Process argument.
+
+			Can throw exceptions.
+
+			\return The number of processed arguments.
+		*/
+		virtual int process(
+			//! Command line context.
+			QtArgCmdLineContext & context ) = 0;
 
 		//! Process with visitor.
-		virtual void visit( QtArgCmdLineContext & context ) = 0;
+		virtual void visit(
+			//! Command line context.
+			QtArgCmdLineContext & context ) = 0;
 
 	protected:
 		//! Flag of the argument. If defined.
@@ -293,7 +324,13 @@ QtArgIface::getHelpString( const NamesList & namesList ) const
 // class QtArg
 //
 
-//! Base class of the command line argument.
+/*!
+	\class QtArg
+	\brief Base class of the command line argument.
+
+	This is an argument with one parameter or without
+	any parameters.
+*/
 class QtArg
 	:	public QtArgIface
 {
@@ -393,119 +430,160 @@ class QtArg
 
 		virtual ~QtArg();
 
-		//! \return Flag of the argument.
+		/*!
+			\return Flag of the argument. Returned value is a first
+			flag from the list of flags if defined more than one.
+		*/
 		virtual QChar flag() const;
+
 		/*!
-			Returns first value from the list of flags
-			if defined more than one.
-		*/
-		//! Set new value for the flag of the argument.
-		/*!
+			\brief Set new value of the flag of the argument.
+
 			Clears all previously defined flags from the list
-			and set this new value as only one defined.
+			and set this new value.
 		*/
-		virtual void setFlag( const QChar & fl );
+		virtual void setFlag(
+			//! New value of the flag.
+			const QChar & fl );
 
-		//! Set new value of the name of the argument.
 		/*!
-			Clears all previously defined names from the list
-			and set this new value as only one defined.
+			\brief Set new value of the flag's list of the argument.
+
+			Clears all previously defined flags from the list
+			and set this new values.
 		*/
-		virtual void setFlags( const QtArgIface::FlagsList & f );
+		virtual void setFlags(
+			//! New value of the flag's list.
+			const QtArgIface::FlagsList & f );
 
-		//! \return Name of the argument.
 		/*!
-			Returns first value from the list of names
-			if defined more than one.
+			\return Name of the argument. Returned value is a first
+			name from the list of names if defined more than one.
 		*/
 		QString name() const;
-		//! Set new value of the name of the argument.
+
 		/*!
-			Clears all previously defined names from the list
-			and set this new value as only one defined.
-		*/
-		void setName( const QString & n );
+			\brief Set new value of the name of the argument.
 
-		//! Set new value of the name of the argument.
+			Clears all previously defined names from the list
+			and set this new value.
+		*/
+		void setName(
+			//! New value of the name.
+			const QString & n );
+
 		/*!
+			\brief Set new value of the name of the argument.
+
 			Clears all previously defined names from the list
-			and set this new value as only one defined.
+			and set this new values.
 		*/
-		void setNames( const QtArgIface::NamesList & n );
+		void setNames(
+			//! List of names.
+			const QtArgIface::NamesList & n );
 
-		//! Set value of the description of the argument.
-		//! Rewrites previously defined description.
-		void setDescription( const QString & ds );
+		/*!
+			\brief Set value of the description of the argument.
 
-		//! Set long description for this argument.
-		void setLongDescription( const QString & desc );
+			Rewrites previously defined description.
+		*/
+		void setDescription(
+			//! Description of the argument.
+			const QString & ds );
 
-		//! Set value of the required property.
-		void setRequired( bool on = true );
+		/*!
+			\brief Set long description for this argument.
 
-		//! Set value of the property that hold whether this argument
-		//! should have a value or not.
-		void setWithValue( bool on = true );
+			Rewrites previously defined long description.
+		*/
+		void setLongDescription(
+			//! Long description of the argument.
+			const QString & desc );
 
-		//! \return Visitor of this argument,
-		//! NULL if visitor wasn't defined.
+		//! \brief Set value of the required property.
+		void setRequired(
+			//! Value of the "required" property.
+			bool on = true );
+
+		/*!
+			\brief Set value of the property that hold whether
+			this argument should have a value or not.
+		*/
+		void setWithValue(
+			//! Value of the "withValue" property.
+			bool on = true );
+
+		/*!
+			\return Visitor of this argument,
+			\retval NULL if visitor wasn't defined.
+		*/
 		QtArgVisitorIface * visitor() const;
-		//! Set visitor to this argument.
-		//! Replace previously defined visitor if defined.
-		void setVisitor( QtArgVisitorIface * v );
 
-		//! \return Constraint for the values,
-		//! NULL if constraint wasn't defined.
+		/*!
+			\brief Set visitor to this argument.
+
+			Replace previously defined visitor if defined.
+		*/
+		void setVisitor(
+			//! Pointer to the visitor.
+			QtArgVisitorIface * v );
+
+		/*!
+			\return Constraint for the values,
+			\retval NULL if constraint wasn't defined.
+		*/
 		QtArgConstraintIface * constraint() const;
-		//! Set constraint to this argument.
-		//! Replace previously defined constraint if defined.
-		void setConstraint( QtArgConstraintIface * c );
+
+		/*!
+			\brief Set constraint to this argument.
+
+			Replace previously defined constraint if defined.
+		*/
+		void setConstraint(
+			//! Pointer to the constraint.
+			QtArgConstraintIface * c );
 
 		//! \return Value of the argument.
 		const QVariant & value() const;
+
 		//! \return Value of the argument.
 		QVariant & value();
-		//! Set value of the argument.
-		virtual void setValue( const QVariant & v );
 
-		//! Set m_defined flag.
-		void setDefined( bool on = true );
+		//! \brief Set value of the argument.
+		virtual void setValue(
+			//! Value of the argument.
+			const QVariant & v );
 
-		//! \return true if argument was present in the command line.
+		//! \brief Set "defined" property.
+		void setDefined(
+			//! Value of the "defined" property.
+			bool on = true );
+
+		/*!
+			\retval true if argument was present in the command line.
+			\retval false if argument wasn't present in the command line.
+		*/
 		bool isPresent() const;
-		//! Set m_present flag.
-		void setPresent( bool on = true );
 
-		//! \name Equal and not equal operators.
-		//! \{
-			friend bool operator == ( const QtArg & a1, const QtArg & a2 );
-			friend bool operator != ( const QtArg & a1, const QtArg & a2 );
-			friend bool operator == ( const QtArg & a1, const QString & a2 );
-			friend bool operator != ( const QtArg & a1, const QString & a2 );
-			friend bool operator == ( const QtArg & a1, const QChar & a2 );
-			friend bool operator != ( const QtArg & a1, const QChar & a2 );
-			friend bool operator == ( const QtArg & a1,
-				const QtArgIface::FlagsList & a2 );
-			friend bool operator != ( const QtArg & a1,
-				const QtArgIface::FlagsList & a2 );
-			friend bool operator == ( const QtArg & a1,
-				const QtArgIface::NamesList & a2 );
-			friend bool operator != ( const QtArg & a1,
-				const QtArgIface::NamesList & a2 );
-		//! \}
+		//! Set "present" property.
+		void setPresent(
+			//! Value of the "present" property.
+			bool on = true );
 
 		//! \name QtArgIface implementation.
 		//! \{
 
 			/*!
+				\return Is this argument required?
 				\retval true if argument is required.
-				\retval false otherwise.
+				\retval false if argument isn't required.
 			*/
 			virtual bool isRequired() const;
 
 			/*!
-				\retval true if argument has decided he gas been defined.
-				\retval false otherwise.
+				\return Is this argument defined in command line?
+				\retval true if argument has decided he has been defined.
+				\retval false if argument hasn't decided he has been defined..
 			*/
 			virtual bool isDefined() const;
 
@@ -516,16 +594,19 @@ class QtArg
 			*/
 			virtual bool isWithValue() const;
 
-			//! \throws QtArgDissallowedFlagOrNameEx if the flag is equal
-			//! to the delimiter or one of the names is empty or equal
-			//! to the space symbol.
+			/*!
+				Check correctness of the names, flags and so on before parsing.
+
+				\throw QtArgDissallowedFlagOrNameEx
+				\throw QtArgNameOrFlagAlreadyKnownEx
+			*/
 			virtual void check(
-				//! Delimiter.
+				//! Delimiter character.
 				const QChar & delimiter,
-				//! Already known flags.
-				QtArgIface::FlagsList & alreadyKnownFlags,
-				//! Already known names.
-				QtArgIface::NamesList & alreadyKnownNames ) const;
+				//! All known flags in every argument.
+				FlagsList & alreadyKnownFlags,
+				//! All known names in every argument.
+				NamesList & alreadyKnownNames ) const;
 
 			//! Check correctness of the state of the argument after parsing.
 			virtual void check() const;
@@ -544,47 +625,99 @@ class QtArg
 			/*!
 				\brief Should return pointer to the QtArgIface if this
 				argument know how to do it, usually returns "this" if he does.
+				If this argument handles another arguments with flag \a flag
+				than he should return pointer to this argument.
 
 				\retval Pointer to the QtArgIface if flag \a flag determines
 				this argument.
 				\retval NULL if flag \a flag doesn't determine this argument.
 			*/
-			virtual QtArgIface * giveArgument( const QChar & flag );
+			virtual QtArgIface * giveArgument(
+				/*!
+					Is a flag that returned argument should own. If
+					this argument doesn't own this flag or sub-arguments don't
+					own this flag then returned value should be null-pointer.
+				*/
+				const QChar & flag );
 
 			/*!
 				\brief Should return pointer to the QtArgIface if this
 				argument know how to do it, usually returns "this" if he does.
+				If this argument handles another arguments with name \a name
+				than he should return pointer to this argument.
 
 				\retval Pointer to the QtArgIface if name \a name determines
 				this argument.
 				\retval NULL if name \a name doesn't determine this argument.
 			*/
-			virtual QtArgIface * giveArgument( const QString & name );
+			virtual QtArgIface * giveArgument(
+				/*!
+					Is a name that returned argument should own. If
+					this argument doesn't own this name or sub-arguments don't
+					own this name then returned value should be null-pointer.
+				*/
+				const QString & name );
 
-			//! \return List of the arguments handled by this argument.
 			/*!
-				Usually returns list with "this" pointer.
+				\brief Usually returns list with "this" pointer or list
+				with all handled arguments.
+
+				\return List of the arguments handled by this argument.
 			*/
 			virtual const QtArgCmdLineIface::QtArgumentsList &
 			arguments() const;
 
-			//! Check corrcetness of the argument constraint.
 			/*!
-				Should throw QtArgContraintNotObservedEx if constraint
+				\brief Check correctness of the argument constraint.
+
+				\throw QtArgContraintNotObservedEx if constraint
 				didn't observed.
 			*/
 			virtual void checkConstraint() const;
 
 	protected:
-			//! Process argument.
-			//! Can throw exceptions.
-			//! \return The number of processed arguments.
-			virtual int process( QtArgCmdLineContext & context );
+			/*!
+				\brief Process argument.
+
+				Can throw exceptions.
+
+				\return The number of processed arguments.
+			*/
+			virtual int process(
+				//! Command line context.
+				QtArgCmdLineContext & context );
 
 			//! Process with visitor.
-			virtual void visit( QtArgCmdLineContext & context );
+			virtual void visit(
+				//! Command line context.
+				QtArgCmdLineContext & context );
 
 		//! \}
+
+		//! Is equal with another argument?
+		friend bool operator == ( const QtArg & a1, const QtArg & a2 );
+		//! Isn't equal with another argument?
+		friend bool operator != ( const QtArg & a1, const QtArg & a2 );
+		//! Is equal with name \a a2?
+		friend bool operator == ( const QtArg & a1, const QString & a2 );
+		//! Isn't equal with name \a a2?
+		friend bool operator != ( const QtArg & a1, const QString & a2 );
+		//! Is equal with flag \a a2?
+		friend bool operator == ( const QtArg & a1, const QChar & a2 );
+		//! Isn't equal with flag \a a2?
+		friend bool operator != ( const QtArg & a1, const QChar & a2 );
+		//! Is equal with flag's list \a a2?
+		friend bool operator == ( const QtArg & a1,
+			const QtArgIface::FlagsList & a2 );
+		//! Isn't equal with flag's list \a a2?
+		friend bool operator != ( const QtArg & a1,
+			const QtArgIface::FlagsList & a2 );
+		//! Is equal with name's list \a a2?
+		friend bool operator == ( const QtArg & a1,
+			const QtArgIface::NamesList & a2 );
+		//! Isn't equal with name's list \a a2?
+		friend bool operator != ( const QtArg & a1,
+			const QtArgIface::NamesList & a2 );
 
 	private:
 		//! Description of the argument.
@@ -592,24 +725,32 @@ class QtArg
 		//! Long description for this argument.
 		QString m_longDescription;
 
-		//! Is argument required?
+		//! Is argument required? "required" property.
 		bool m_required;
-		//! Should argument has a value?
+		//! Should argument has a value? "withValue" property.
 		bool m_withValue;
-		//! Is this argument and probaly his value defined.
+		//! Is this argument and probaly his value defined. "defined" property.
 		bool m_defined;
-		//! Was this argument present in the command line.
+		//! Was this argument present in the command line. "present" property.
 		bool m_present;
 
 		//! Value of the argument.
 		QVariant m_value;
 
-		//! Visitor of the argument.
-		//! QtArg doesn't handle life cycle of the
-		//! QtArgVisitor. So you must care about it.
+		/*!
+			\brief Visitor of the argument.
+
+			QtArg doesn't handle life cycle of the
+			QtArgVisitorIface. So you must care about it.
+		*/
 		QtArgVisitorIface * m_visitor;
 
-		//! Constraint foor the argument's values.
+		/*!
+			\brief Constraint foor the argument's values.
+
+			QtArg doesn't handle life cycle of the
+			QtArgConstraintIface. So you must care about it.
+		*/
 		QtArgConstraintIface * m_constraint;
 
 		//! Arguments handled by this argument.
