@@ -1,3 +1,7 @@
+version 1.1.2 (2012.04.11)
+
+ * Implemented ignore rest.
+ * Implemented counter for QtMultiArg (now you can write "-v 3" insted of "-v -v -v")
 
 version 1.1.1 (2011.04.11)
 
