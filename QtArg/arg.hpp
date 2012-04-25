@@ -100,7 +100,7 @@ class QtArgIface {
 		/*!
 			\return Is this argument defined in command line?
 			\retval true if argument has decided he has been defined.
-			\retval false if argument hasn't decided he has been defined..
+			\retval false if argument hasn't decided he has been defined.
 		*/
 		virtual bool isDefined() const = 0;
 
@@ -783,6 +783,12 @@ QtArg::QtArg(
 		,	m_constraint( constraint )
 {
 	m_args << this;
+
+	if( !isWithValue() )
+	{
+		setValue( QVariant( false ) );
+		setDefined( false );
+	}
 }
 
 inline
@@ -804,6 +810,12 @@ QtArg::QtArg(
 		,	m_constraint( constraint )
 {
 	m_args << this;
+
+	if( !isWithValue() )
+	{
+		setValue( QVariant( false ) );
+		setDefined( false );
+	}
 }
 
 inline
@@ -825,6 +837,12 @@ QtArg::QtArg(
 		,	m_constraint( constraint )
 {
 	m_args << this;
+
+	if( !isWithValue() )
+	{
+		setValue( QVariant( false ) );
+		setDefined( false );
+	}
 }
 
 inline
@@ -845,6 +863,12 @@ QtArg::QtArg(
 		,	m_constraint( constraint )
 {
 	m_args << this;
+
+	if( !isWithValue() )
+	{
+		setValue( QVariant( false ) );
+		setDefined( false );
+	}
 }
 
 inline
@@ -865,6 +889,12 @@ QtArg::QtArg(
 		,	m_constraint( constraint )
 {
 	m_args << this;
+
+	if( !isWithValue() )
+	{
+		setValue( QVariant( false ) );
+		setDefined( false );
+	}
 }
 
 inline
@@ -886,6 +916,12 @@ QtArg::QtArg(
 		,	m_constraint( constraint )
 {
 	m_args << this;
+
+	if( !isWithValue() )
+	{
+		setValue( QVariant( false ) );
+		setDefined( false );
+	}
 }
 
 inline
@@ -901,6 +937,12 @@ QtArg::QtArg( const QtArg & arg )
 	,	m_constraint( arg.m_constraint )
 {
 	m_args << this;
+
+	if( !isWithValue() )
+	{
+		setValue( QVariant( false ) );
+		setDefined( false );
+	}
 }
 
 inline QtArg &
@@ -1073,7 +1115,7 @@ QtArg::setDefined( bool on )
 {
 	m_defined = on;
 
-	setPresent();
+	setPresent( on );
 }
 
 inline bool

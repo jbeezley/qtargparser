@@ -1,3 +1,9 @@
+version 1.2.0 (2012.04.25)
+ * Now QtArg without value and not defined already has value QVariant( false )
+ * QtMultiArg without value and not defined already has value QVariant( false )
+ * QtMultiArg without value and defined already has value QVariant( true )
+ * QtMultiArg with value has value QVariant( QList< QVariant< QString > > )
+
 version 1.1.2 (2012.04.11)
 
  * Implemented ignore rest.

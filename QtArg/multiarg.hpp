@@ -294,6 +294,7 @@ QtMultiArg::QtMultiArg(
 inline
 QtMultiArg::QtMultiArg( const QtArg & arg )
 	:	QtArg( arg )
+	,	m_count( 0 )
 {
 }
 
@@ -302,12 +303,15 @@ QtMultiArg::operator = ( const QtArg & arg )
 {
 	QtArg::operator = ( arg );
 
+	m_count = 0;
+
 	return *this;
 }
 
 inline
 QtMultiArg::QtMultiArg( const QtMultiArg & arg )
 	:	QtArg( arg )
+	,	m_count( arg.count() )
 {
 }
 
@@ -315,6 +319,8 @@ inline QtMultiArg &
 QtMultiArg::operator = ( const QtMultiArg & arg )
 {
 	QtArg::operator = ( arg );
+
+	m_count = arg.count();
 
 	return *this;
 }
@@ -399,10 +405,7 @@ QtMultiArg::process( QtArgCmdLineContext & context )
 		setPresent( true );
 
 		if( !isDefined() )
-		{
-			setValue( QVariant( true ) );
-			setDefined( true );
-		}
+			QtArg::setValue( QVariant( true ) );
 
 		return 1;
 	}

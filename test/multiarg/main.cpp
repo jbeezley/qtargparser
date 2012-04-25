@@ -94,8 +94,7 @@ UNIT_TEST_START
 
 		cmd.parse();
 
-		CHECK_CONDITION( one.value().toList().size() == 1 )
-		CHECK_CONDITION( one.value().toList().front().toBool() == true )
+		CHECK_CONDITION( one.value().toBool() == true )
 		CHECK_CONDITION( one.isDefined() == true )
 		CHECK_CONDITION( one.count() == 2 )
 
@@ -121,8 +120,7 @@ UNIT_TEST_START
 
 		cmd.parse();
 
-		CHECK_CONDITION( one.value().toList().size() == 1 )
-		CHECK_CONDITION( one.value().toList().front().toBool() == true )
+		CHECK_CONDITION( one.value().toBool() == true )
 		CHECK_CONDITION( one.isDefined() == true )
 		CHECK_CONDITION( one.count() == 2 )
 
@@ -148,8 +146,7 @@ UNIT_TEST_START
 
 		cmd.parse();
 
-		CHECK_CONDITION( one.value().toList().size() == 1 )
-		CHECK_CONDITION( one.value().toList().front().toBool() == true )
+		CHECK_CONDITION( one.value().toBool() == true )
 		CHECK_CONDITION( one.isDefined() == true )
 		CHECK_CONDITION( one.count() == 3 )
 
@@ -175,8 +172,7 @@ UNIT_TEST_START
 
 		cmd.parse();
 
-		CHECK_CONDITION( one.value().toList().size() == 1 )
-		CHECK_CONDITION( one.value().toList().front().toBool() == true )
+		CHECK_CONDITION( one.value().toBool() == true )
 		CHECK_CONDITION( one.isDefined() == true )
 		CHECK_CONDITION( one.count() == 4 )
 
@@ -202,11 +198,44 @@ UNIT_TEST_START
 
 		cmd.parse();
 
-		CHECK_CONDITION( one.value().toList().size() == 1 )
-		CHECK_CONDITION( one.value().toList().front().toBool() == true )
+		CHECK_CONDITION( one.value().toBool() == true )
 		CHECK_CONDITION( one.isDefined() == true )
 		CHECK_CONDITION( one.count() == 5 )
 
 	UNIT_FINISH( test_count_in_multiarg_5 )
+
+
+	//
+	// test_not_defined_multiarg
+	//
+
+	UNIT_START( test_not_defined_multiarg )
+
+		QStringList arguments;
+		arguments << "program" << "-a" << "-a";
+
+		QtArgCmdLine cmd( arguments );
+
+		QtMultiArg one( 'a' );
+		QtMultiArg two( 'b' );
+
+		cmd.addArg( one );
+		cmd.addArg( two );
+
+		CHECK_CONDITION( one.value().toBool() == false )
+		CHECK_CONDITION( two.value().toBool() == false )
+
+		cmd.parse();
+
+		CHECK_CONDITION( one.value().toBool() == true )
+		CHECK_CONDITION( one.isDefined() == true )
+		CHECK_CONDITION( one.count() == 2 )
+
+		CHECK_CONDITION( two.value().toBool() == false )
+		CHECK_CONDITION( two.isDefined() == false )
+		CHECK_CONDITION( two.isPresent() == false )
+		CHECK_CONDITION( two.count() == 0 )
+
+	UNIT_FINISH( test_not_defined_multiarg )
 
 UNIT_TEST_FINISH
