@@ -461,7 +461,7 @@ QtXorArg::getUsageString( const NamesList & namesList ) const
 		usage.append( arg->getUsageString( namesList ) );
 
 		if( count && count < m_args.size() )
-			usage.append( " | " );
+			usage.append( QLatin1String( " | " ) );
 
 		++count;
 	}

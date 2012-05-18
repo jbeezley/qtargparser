@@ -51,13 +51,13 @@ UNIT_TEST_START
 	UNIT_START( test_xor_correctly_used )
 
 		QStringList arguments;
-		arguments << "program" << "--one";
+		arguments << QLatin1String( "program" ) << QLatin1String( "--one" );
 
 		QtArgCmdLine cmd( arguments );
 
-		QtArg one( "one" );
-		QtArg two( "two" );
-		QtXorArg xored( one, two, "xored" );
+		QtArg one( QLatin1String( "one" ) );
+		QtArg two( QLatin1String( "two" ) );
+		QtXorArg xored( one, two, QLatin1String( "xored" ) );
 
 		cmd.addArg( xored );
 
@@ -80,13 +80,14 @@ UNIT_TEST_START
 	UNIT_START( test_two_args_defined_under_xor )
 
 		QStringList arguments;
-		arguments << "program" << "--one" << "--two";
+		arguments << QLatin1String( "program" )
+			<< QLatin1String( "--one" ) << QLatin1String( "--two" );
 
 		QtArgCmdLine cmd( arguments );
 
-		QtArg one( "one" );
-		QtArg two( "two" );
-		QtXorArg xored( one, two, "xored" );
+		QtArg one( QLatin1String( "one" ) );
+		QtArg two( QLatin1String( "two" ) );
+		QtXorArg xored( one, two, QLatin1String( "xored" ) );
 
 		cmd.addArg( xored );
 
@@ -102,15 +103,16 @@ UNIT_TEST_START
 	UNIT_START( test_adding_required_arg_under_xor_must_fail )
 
 		QStringList arguments;
-		arguments << "program" << "--one" << "--two";
+		arguments << QLatin1String( "program" )
+			<< QLatin1String( "--one" ) << QLatin1String( "--two" );
 
 		QtArgCmdLine cmd( arguments );
 
-		QtArg one( "one", QString(), true );
-		QtArg two( "two" );
+		QtArg one( QLatin1String( "one" ), QString(), true );
+		QtArg two( QLatin1String( "two" ) );
 
 		CHECK_THROW( QtArgRequiredArgumentUnderXORMaskEx,
-			QtXorArg xored( one, two, "xored" ); )
+			QtXorArg xored( one, two, QLatin1String( "xored" ) ); )
 
 	UNIT_FINISH( test_adding_required_arg_under_xor_must_fail )
 
@@ -122,13 +124,13 @@ UNIT_TEST_START
 	UNIT_START( test_mandatory_xor_arg_not_defined )
 
 		QStringList arguments;
-		arguments << "program";
+		arguments << QLatin1String( "program" );
 
 		QtArgCmdLine cmd( arguments );
 
-		QtArg one( "one" );
-		QtArg two( "two" );
-		QtXorArg xored( one, two, "xored", true );
+		QtArg one( QLatin1String( "one" ) );
+		QtArg two( QLatin1String( "two" ) );
+		QtXorArg xored( one, two, QLatin1String( "xored" ), true );
 
 		cmd.addArg( xored );
 

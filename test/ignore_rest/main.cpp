@@ -49,22 +49,28 @@ UNIT_TEST_START
 	UNIT_START( test_ignore_rest_1 )
 
 		QStringList arguments;
-		arguments << "test" << "-a" << "1" << "--bb" << "2" << "--"
-			<< "--cc" << "3" << "-d" << "4"
-			<< "-e" << "-f" << "-g" << "-i" << "5";
+		arguments << QLatin1String( "test" )
+			<< QLatin1String( "-a" ) << QLatin1String( "1" )
+			<< QLatin1String( "--bb" ) << QLatin1String( "2" )
+			<< QLatin1String( "--" )
+			<< QLatin1String( "--cc" ) << QLatin1String( "3" )
+			<< QLatin1String( "-d" ) << QLatin1String( "4" )
+			<< QLatin1String( "-e" ) << QLatin1String( "-f" )
+			<< QLatin1String( "-g" )
+			<< QLatin1String( "-i" ) << QLatin1String( "5" );
 
 		QtArgCmdLine cmd( arguments );
 
-		QtArg a( 'a', QString(), QString(), false, true );
-		QtArg b( QString::fromLatin1( "bb" ), QString(), false, true );
+		QtArg a( QLatin1Char( 'a' ), QString(), QString(), false, true );
+		QtArg b( QLatin1String( "bb" ), QString(), false, true );
 
 		cmd.addArg( a );
 		cmd.addArg( b );
 
 		cmd.parse();
 
-		CHECK_CONDITION( a.value().toString() == "1" )
-		CHECK_CONDITION( b.value().toString() == "2" )
+		CHECK_CONDITION( a.value().toString() == QLatin1String( "1" ) )
+		CHECK_CONDITION( b.value().toString() == QLatin1String( "2" ) )
 
 	UNIT_FINISH( test_ignore_rest_1 )
 
@@ -76,19 +82,23 @@ UNIT_TEST_START
 	UNIT_START( test_ignore_rest_2 )
 
 	QStringList arguments;
-	arguments << "test" << "-a" << "1" << "--bb" << "2" << "--"
-		<< "--cc=3" << "-d4" << "-ef" << "-gi5";
+	arguments << QLatin1String( "test" )
+		<< QLatin1String( "-a" ) << QLatin1String( "1" )
+		<< QLatin1String( "--bb" ) << QLatin1String( "2" )
+		<< QLatin1String( "--" )
+		<< QLatin1String( "--cc=3" ) << QLatin1String( "-d4" )
+		<< QLatin1String( "-ef" ) << QLatin1String( "-gi5" );
 
 	QtArgCmdLine cmd( arguments );
 
-	QtArg a( 'a', QString(), QString(), false, true );
-	QtArg b( QString::fromLatin1( "bb" ), QString(), false, true );
-	QtArg c( QString::fromLatin1( "cc" ), QString(), false, true );
-	QtArg d( 'd', QString(), QString(), false, true );
-	QtArg e( 'e', QString(), QString(), false, false );
-	QtArg f( 'f', QString(), QString(), false, false );
-	QtArg g( 'g', QString(), QString(), false, false );
-	QtArg i( 'i', QString(), QString(), false, true );
+	QtArg a( QLatin1Char( 'a' ), QString(), QString(), false, true );
+	QtArg b( QLatin1String( "bb" ), QString(), false, true );
+	QtArg c( QLatin1String( "cc" ), QString(), false, true );
+	QtArg d( QLatin1Char( 'd' ), QString(), QString(), false, true );
+	QtArg e( QLatin1Char( 'e' ), QString(), QString(), false, false );
+	QtArg f( QLatin1Char( 'f' ), QString(), QString(), false, false );
+	QtArg g( QLatin1Char( 'g' ), QString(), QString(), false, false );
+	QtArg i( QLatin1Char( 'i' ), QString(), QString(), false, true );
 
 	cmd.addArg( a );
 	cmd.addArg( b );
@@ -101,14 +111,14 @@ UNIT_TEST_START
 
 	cmd.parse( true );
 
-	CHECK_CONDITION( a.value().toString() == "1" )
-	CHECK_CONDITION( b.value().toString() == "2" )
-	CHECK_CONDITION( c.value().toString() == "3" )
-	CHECK_CONDITION( d.value().toString() == "4" )
+	CHECK_CONDITION( a.value().toString() == QLatin1String( "1" ) )
+	CHECK_CONDITION( b.value().toString() == QLatin1String( "2" ) )
+	CHECK_CONDITION( c.value().toString() == QLatin1String( "3" ) )
+	CHECK_CONDITION( d.value().toString() == QLatin1String( "4" ) )
 	CHECK_CONDITION( e.value().toBool() == true )
 	CHECK_CONDITION( f.value().toBool() == true )
 	CHECK_CONDITION( g.value().toBool() == true )
-	CHECK_CONDITION( i.value().toString() == "5" )
+	CHECK_CONDITION( i.value().toString() == QLatin1String( "5" ) )
 
 	UNIT_FINISH( test_ignore_rest_2 )
 

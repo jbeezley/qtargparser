@@ -80,10 +80,11 @@ UNIT_TEST_START
 
 	UNIT_START( test_visitor )
 
-		const QString argName = QString::fromLatin1( "one" );
+		const QString argName = QLatin1String( "one" );
 
 		QStringList arguments;
-		arguments << "program" << QString::fromLatin1( "--" ) + argName;
+		arguments << QLatin1String( "program" )
+			<< QLatin1String( "--" ) + argName;
 
 		QtArgCmdLine cmd( arguments );
 

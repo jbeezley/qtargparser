@@ -48,14 +48,15 @@ UNIT_TEST_START
 
 	UNIT_START( test_not_fully_defined_argument_name )
 
-		const QString value = QString::fromLatin1( "value" );
+		const QString value = QLatin1String( "value" );
 
 		QStringList arguments;
-		arguments << "program" << "--on" << value;
+		arguments << QLatin1String( "program" )
+			<< QLatin1String( "--on" ) << value;
 
 		QtArgCmdLine cmd( arguments );
 
-		QtArg one( QString::fromLatin1( "one" ), QString(), false, true );
+		QtArg one( QLatin1String( "one" ), QString(), false, true );
 
 		cmd.addArg( one );
 
@@ -74,15 +75,16 @@ UNIT_TEST_START
 
 	UNIT_START( test_contentious_argument_name )
 
-		const QString value = QString::fromLatin1( "value" );
+		const QString value = QLatin1String( "value" );
 
 		QStringList arguments;
-		arguments << "program" << "--on" << value;
+		arguments << QLatin1String( "program" )
+			<< QLatin1String( "--on" ) << value;
 
 		QtArgCmdLine cmd( arguments );
 
-		QtArg one( QString::fromLatin1( "one" ), QString(), false, true );
-		QtArg once( QString::fromLatin1( "once" ), QString(), false, true );
+		QtArg one( QLatin1String( "one" ), QString(), false, true );
+		QtArg once( QLatin1String( "once" ), QString(), false, true );
 
 		cmd.addArg( one );
 		cmd.addArg( once );

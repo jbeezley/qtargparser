@@ -49,15 +49,17 @@ UNIT_TEST_START
 
 	UNIT_START( test_multiarg )
 
-		const QString firstValue = QString::fromLatin1( "first" );
-		const QString secondValue = QString::fromLatin1( "second" );
+		const QString firstValue = QLatin1String( "first" );
+		const QString secondValue = QLatin1String( "second" );
 
 		QStringList arguments;
-		arguments << "program" << "-a" << firstValue << "-a" << secondValue;
+		arguments << QLatin1String( "program" )
+			<< QLatin1String( "-a" ) << firstValue
+			<< QLatin1String( "-a" ) << secondValue;
 
 		QtArgCmdLine cmd( arguments );
 
-		QtMultiArg one( 'a' );
+		QtMultiArg one( QLatin1Char( 'a' ) );
 		one.setWithValue( true );
 
 		cmd.addArg( one );
@@ -82,11 +84,12 @@ UNIT_TEST_START
 	UNIT_START( test_count_in_multiarg_1 )
 
 		QStringList arguments;
-		arguments << "program" << "-a" << "-a";
+		arguments << QLatin1String( "program" )
+			<< QLatin1String( "-a" ) << QLatin1String( "-a" );
 
 		QtArgCmdLine cmd( arguments );
 
-		QtMultiArg one( 'a' );
+		QtMultiArg one( QLatin1Char( 'a' ) );
 
 		cmd.addArg( one );
 
@@ -108,11 +111,12 @@ UNIT_TEST_START
 	UNIT_START( test_count_in_multiarg_2 )
 
 		QStringList arguments;
-		arguments << "program" << "-a" << "-a";
+		arguments << QLatin1String( "program" )
+			<< QLatin1String( "-a" ) << QLatin1String( "-a" );
 
 		QtArgCmdLine cmd( arguments );
 
-		QtMultiArg one( 'a' );
+		QtMultiArg one( QLatin1Char( 'a' ) );
 
 		cmd.addArg( one );
 
@@ -134,11 +138,12 @@ UNIT_TEST_START
 	UNIT_START( test_count_in_multiarg_3 )
 
 		QStringList arguments;
-		arguments << "program" << "-a" << "3";
+		arguments << QLatin1String( "program" )
+			<< QLatin1String( "-a" ) << QLatin1String( "3" );
 
 		QtArgCmdLine cmd( arguments );
 
-		QtMultiArg one( 'a' );
+		QtMultiArg one( QLatin1Char( 'a' ) );
 
 		cmd.addArg( one );
 
@@ -160,11 +165,11 @@ UNIT_TEST_START
 	UNIT_START( test_count_in_multiarg_4 )
 
 		QStringList arguments;
-		arguments << "program" << "-a4";
+		arguments << QLatin1String( "program" ) << QLatin1String( "-a4" );
 
 		QtArgCmdLine cmd( arguments );
 
-		QtMultiArg one( 'a' );
+		QtMultiArg one( QLatin1Char( 'a' ) );
 
 		cmd.addArg( one );
 
@@ -186,11 +191,11 @@ UNIT_TEST_START
 	UNIT_START( test_count_in_multiarg_5 )
 
 		QStringList arguments;
-		arguments << "program" << "-a=5";
+		arguments << QLatin1String( "program" ) << QLatin1String( "-a=5" );
 
 		QtArgCmdLine cmd( arguments );
 
-		QtMultiArg one( 'a' );
+		QtMultiArg one( QLatin1Char( 'a' ) );
 
 		cmd.addArg( one );
 
@@ -212,12 +217,13 @@ UNIT_TEST_START
 	UNIT_START( test_not_defined_multiarg )
 
 		QStringList arguments;
-		arguments << "program" << "-a" << "-a";
+		arguments << QLatin1String( "program" )
+			<< QLatin1String( "-a" ) << QLatin1String( "-a" );
 
 		QtArgCmdLine cmd( arguments );
 
-		QtMultiArg one( 'a' );
-		QtMultiArg two( 'b' );
+		QtMultiArg one( QLatin1Char( 'a' ) );
+		QtMultiArg two( QLatin1Char( 'b' ) );
 
 		cmd.addArg( one );
 		cmd.addArg( two );

@@ -43,25 +43,30 @@ void main( int argc, char ** argv )
 	try {
 		QtArgCmdLine cmd( argc, argv );
 
-		QtArg one( QtArgIface::NamesList() << "one" << "and-one",
-			"one description", true, true );
-		one.setLongDescription( "This is a long description "
-			"of the \"one\" argument." );
+		QtArg one( QtArgIface::NamesList() << QLatin1String( "one" )
+				<< QLatin1String( "and-one" ),
+			QLatin1String( "one description" ), true, true );
+		one.setLongDescription( QLatin1String( "This is a long description " ) +
+			QLatin1String( "of the \"one\" argument." ) );
 
-		QtArg two( "two", "two description" );
+		QtArg two( QLatin1String( "two" ), QLatin1String( "two description" ) );
 
-		QtArg a( QtArgIface::FlagsList() << 'a' << 'c' << 'd',
-			QtArgIface::NamesList() << "three-flags",
-			"three flags description" );
+		QtArg a( QtArgIface::FlagsList() << QLatin1Char( 'a' )
+				<< QLatin1Char( 'c' ) << QLatin1Char( 'd' ),
+			QtArgIface::NamesList() << QLatin1String( "three-flags" ),
+			QLatin1String( "three flags description" ) );
 
-		QtArg b( QtArgIface::FlagsList() << 'b' << 'e' << 'f',
-			QtArgIface::NamesList(), "b description", false, true );
+		QtArg b( QtArgIface::FlagsList() << QLatin1Char( 'b' )
+				<< QLatin1Char( 'e' ) << QLatin1Char( 'f' ),
+			QtArgIface::NamesList(), QLatin1String( "b description" ),
+			false, true );
 
-		QtXorArg xored( a, b, "xored" );
+		QtXorArg xored( a, b, QLatin1String( "xored" ) );
 
 		QtArgHelp help( &cmd );
-		help.printer()->setProgramDescription( "Testing help printing." );
-		help.printer()->setExecutableName( argv[0] );
+		help.printer()->setProgramDescription(
+			QLatin1String( "Testing help printing." ) );
+		help.printer()->setExecutableName( QLatin1String( argv[0] ) );
 
 		cmd.addArg( one );
 		cmd.addArg( two );

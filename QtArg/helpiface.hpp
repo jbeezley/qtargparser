@@ -84,8 +84,8 @@ markUnrequiredPartOfTheName(
 
 	if( index != name.length() )
 	{
-		name.insert( index, '[' );
-		name.append( ']' );
+		name.insert( index, QLatin1Char( '[' ) );
+		name.append( QLatin1Char( ']' ) );
 	}
 } // markUnrequiredPartOfTheName
 

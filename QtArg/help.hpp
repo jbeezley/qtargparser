@@ -153,7 +153,7 @@ QtArgDefaultHelpPrinter::print() const
 
 	stream << m_programDescription << endl << endl;
 	stream << QLatin1String( "USAGE: " ) << m_executableName
-		<< ' ' << m_usage << endl << endl;
+		<< QLatin1Char( ' ' ) << m_usage << endl << endl;
 	stream << m_help;
 }
 
@@ -343,7 +343,7 @@ QtArgDefaultHelpPrinter::replaceMarkersInHelp()
 			{
 				m_help.replace( beforeFlagsIdx,
 					QtArgHelpPrinterIface::beforeFlags.length(),
-					QString( beforeFlagsLength, ' ' ) );
+					QString( beforeFlagsLength, QLatin1Char( ' ' ) ) );
 
 				beforeDescSpace -= ( beforeFlagsLength + flagsLength );
 
@@ -359,7 +359,8 @@ QtArgDefaultHelpPrinter::replaceMarkersInHelp()
 
 					m_help.replace( afterFlagsIdx,
 						QtArgHelpPrinterIface::afterFlags.length(),
-						',' + QString( afterFlagsSpace, ' ' ) );
+						QLatin1Char( ',' )
+							+ QString( afterFlagsSpace, QLatin1Char( ' ' ) ) );
 				}
 			}
 			else if( beforeNamesIdx != -1 && beforeNamesIdx < newLineIdx )
@@ -368,7 +369,7 @@ QtArgDefaultHelpPrinter::replaceMarkersInHelp()
 
 				m_help.replace( beforeNamesIdx,
 					QtArgHelpPrinterIface::beforeNames.length(),
-					QString( beforeNamesLength, ' ' ) );
+					QString( beforeNamesLength, QLatin1Char( ' ' ) ) );
 			}
 
 			beforeDescIdx =
@@ -376,7 +377,7 @@ QtArgDefaultHelpPrinter::replaceMarkersInHelp()
 
 			m_help.replace( beforeDescIdx,
 				QtArgHelpPrinterIface::beforeDescription.length(),
-				QString( beforeDescSpace, ' ' ) );
+				QString( beforeDescSpace, QLatin1Char( ' ' ) ) );
 
 			newLineIdx = m_help.indexOf( QtArgHelpPrinterIface::newLine );
 
@@ -502,7 +503,7 @@ class QtArgHelp
 
 inline
 QtArgHelp::QtArgHelp( QtArgCmdLine * cmdLine )
-	:	QtArg( 'h', QLatin1String( "help" ),
+	:	QtArg( QLatin1Char( 'h' ), QLatin1String( "help" ),
 			QLatin1String( "Print this help." ) )
 	,	m_printer( QtArgDefaultHelpPrinter::instance() )
 	,	m_cmdLine( cmdLine )
@@ -543,7 +544,8 @@ QtArgHelp::createUsageString()
 	QString usage;
 
 	createUsageStringForArgs( usage, requiredArgs, QChar::Null, QChar::Null );
-	createUsageStringForArgs( usage, optionalArgs, '[', ']' );
+	createUsageStringForArgs( usage, optionalArgs,
+		QLatin1Char( '[' ), QLatin1Char( ']' ) );
 
 	return usage;
 }
@@ -556,7 +558,7 @@ QtArgHelp::createUsageStringForArgs( QString & usage,
 	int count = 1;
 
 	if( usage.length() )
-		usage.append( ' ' );
+		usage.append( QLatin1Char( ' ' ) );
 
 	foreach( QtArgIface * arg, args )
 	{
@@ -569,7 +571,7 @@ QtArgHelp::createUsageStringForArgs( QString & usage,
 			usage.append( after );
 
 		if( count < args.size() )
-			usage.append( ' ' );
+			usage.append( QLatin1Char( ' ' ) );
 	}
 }
 

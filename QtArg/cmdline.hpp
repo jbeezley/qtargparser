@@ -383,7 +383,7 @@ inline void
 QtArgCmdLine::splitArgumentAndValue( const QString & toCheck,
 	QString & argument, QString & value )
 {
-	const int index = toCheck.indexOf( '=' );
+	const int index = toCheck.indexOf( QLatin1Char( '=' ) );
 
 	if( index != -1 )
 	{

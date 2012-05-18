@@ -49,12 +49,12 @@ UNIT_TEST_START
 	UNIT_START( test_two_flags_in_composition )
 
 		QStringList arguments;
-		arguments << "program" << "-ab";
+		arguments << QLatin1String( "program" ) << QLatin1String( "-ab" );
 
 		QtArgCmdLine cmd( arguments );
 
-		QtArg a( 'a' );
-		QtArg b( 'b' );
+		QtArg a( QLatin1Char( 'a' ) );
+		QtArg b( QLatin1Char( 'b' ) );
 
 		cmd.addArg( a );
 		cmd.addArg( b );
@@ -76,14 +76,15 @@ UNIT_TEST_START
 
 	UNIT_START( test_flag_with_correct_defined_option_in_composition )
 
-		const QString value = QString::fromLatin1( "value" );
+		const QString value = QLatin1String( "value" );
 		QStringList arguments;
-		arguments << "program" << "-ab" << value;
+		arguments << QLatin1String( "program" )
+			<< QLatin1String( "-ab" ) << value;
 
 		QtArgCmdLine cmd( arguments );
 
-		QtArg a( 'a' );
-		QtArg b( 'b', QString(), QString(), false, true );
+		QtArg a( QLatin1Char( 'a' ) );
+		QtArg b( QLatin1Char( 'b' ), QString(), QString(), false, true );
 
 		cmd.addArg( a );
 		cmd.addArg( b );
@@ -105,14 +106,15 @@ UNIT_TEST_START
 
 	UNIT_START( test_flag_composition_with_unexpected_option_after_it )
 
-		const QString value = QString::fromLatin1( "value" );
+		const QString value = QLatin1String( "value" );
 		QStringList arguments;
-		arguments << "program" << "-ab" << value;
+		arguments << QLatin1String( "program" )
+			<< QLatin1String( "-ab" ) << value;
 
 		QtArgCmdLine cmd( arguments );
 
-		QtArg a( 'a', QString(), QString(), false, true );
-		QtArg b( 'b' );
+		QtArg a( QLatin1Char( 'a' ), QString(), QString(), false, true );
+		QtArg b( QLatin1Char( 'b' ) );
 
 		cmd.addArg( a );
 		cmd.addArg( b );

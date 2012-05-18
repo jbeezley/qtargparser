@@ -59,9 +59,9 @@ MyArgException::MyArgException( const QString & desc )
 //
 
 MyArg::MyArg()
-	:	QtArg( 'a', QLatin1String( "arg" ),
+	:	QtArg( QLatin1Char( 'a' ), QLatin1String( "arg" ),
 			QLatin1String( "This is our argument with two required values" ),
-			false, true )
+			true, true )
 {
 	m_visitor.setArg( this );
 	setVisitor( &m_visitor );
@@ -113,11 +113,7 @@ void
 main( int argc, char ** argv )
 {
 	try {
-		QtArg arg3( 'c', "", "arg3", false, true );
 		MyArg arg;
-		QtArg arg2( 'b', QtArgIface::NamesList() << "bbb" << "ccc", QLatin1String( "bbb description" ),
-			false, true );
-		QtXorArg xorArg( arg, arg2, QLatin1String( "xor" ), true );
 
 		QtArgCmdLine cmdLine( argc, argv );
 
@@ -125,17 +121,16 @@ main( int argc, char ** argv )
 		help.printer()->setProgramDescription( QLatin1String(
 			"This program shows how to use QtArgVisitorIface." ) );
 
-		cmdLine.addArg( arg3 );
-		cmdLine.addArg( xorArg );
+		cmdLine.addArg( arg );
 		cmdLine.addArg( help );
 
 		cmdLine.parse();
 
 		QTextStream out( stdout );
 
-		out << "Here is values of our argument : "
+		out << QLatin1String( "Here is values of our argument : " )
 			<< arg.value().toString()
-			<< "; " << arg.secondValue().toString()
+			<< QLatin1String( "; " ) << arg.secondValue().toString()
 			<< endl;
 	}
 	catch( const QtArgHelpHasPrintedEx & x )
@@ -144,6 +139,6 @@ main( int argc, char ** argv )
 	catch( const QtArgBaseException & x )
 	{
 		QTextStream out( stdout );
-		out << "Error : " << x.whatAsQString() << endl;
+		out << QLatin1String( "Error : " ) << x.whatAsQString() << endl;
 	}
 }

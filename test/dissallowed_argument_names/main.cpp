@@ -51,8 +51,8 @@ UNIT_TEST_START
 		QStringList arguments;
 		QtArgCmdLine cmd( arguments );
 
-		QtArg one( QString::fromLatin1( " one" ),
-			QString::fromLatin1( "It's our argument with dissallowed name or flag" ) );
+		QtArg one( QLatin1String( " one" ),
+			QLatin1String( "It's our argument with dissallowed name or flag" ) );
 
 		CHECK_THROW( QtArgDissallowedFlagOrNameEx, cmd.addArg( one ); )
 
@@ -68,8 +68,8 @@ UNIT_TEST_START
 		QStringList arguments;
 		QtArgCmdLine cmd( arguments );
 
-		QtArg one( '-', QString(),
-			QString::fromLatin1( "It's our argument with dissallowed name or flag" ) );
+		QtArg one( QLatin1Char( '-' ), QString(),
+			QLatin1String( "It's our argument with dissallowed name or flag" ) );
 
 		CHECK_THROW( QtArgDissallowedFlagOrNameEx, cmd.addArg( one ); )
 
@@ -85,8 +85,8 @@ UNIT_TEST_START
 		QStringList arguments;
 		QtArgCmdLine cmd( arguments );
 
-		QtArg one( ' ', QString(),
-			QString::fromLatin1( "It's our argument with dissallowed name or flag" ) );
+		QtArg one( QLatin1Char( ' ' ), QString(),
+			QLatin1String( "It's our argument with dissallowed name or flag" ) );
 
 		CHECK_THROW( QtArgDissallowedFlagOrNameEx, cmd.addArg( one ); )
 
@@ -102,8 +102,8 @@ UNIT_TEST_START
 		QStringList arguments;
 		QtArgCmdLine cmd( arguments );
 
-		QtArg one( '\t', QString(),
-			QString::fromLatin1( "It's our argument with dissallowed name or flag" ) );
+		QtArg one( QLatin1Char( '\t' ), QString(),
+			QLatin1String( "It's our argument with dissallowed name or flag" ) );
 
 		CHECK_THROW( QtArgDissallowedFlagOrNameEx, cmd.addArg( one ); )
 
@@ -120,7 +120,7 @@ UNIT_TEST_START
 		QtArgCmdLine cmd( arguments );
 
 		QtArg one( QString(),
-			QString::fromLatin1( "It's our argument with dissallowed name or flag" ) );
+			QLatin1String( "It's our argument with dissallowed name or flag" ) );
 
 		CHECK_THROW( QtArgDissallowedFlagOrNameEx, cmd.addArg( one ); )
 
@@ -137,10 +137,11 @@ UNIT_TEST_START
 		QtArgCmdLine cmd( arguments );
 
 		QStringList names;
-		names << "one" << "" << "three";
+		names << QLatin1String( "one" ) << QLatin1String( "" )
+			<< QLatin1String( "three" );
 
 		QtArg one( names,
-			QString::fromLatin1( "It's our argument with dissallowed name or flag" ) );
+			QLatin1String( "It's our argument with dissallowed name or flag" ) );
 
 		CHECK_THROW( QtArgDissallowedFlagOrNameEx, cmd.addArg( one ); )
 
@@ -153,15 +154,16 @@ UNIT_TEST_START
 
 	UNIT_START( test_correct_name )
 
-		const QString value = QString::fromLatin1( "value" );
+		const QString value = QLatin1String( "value" );
 
 		QStringList arguments;
-		arguments << "program" << "--correct-argument" << value;
+		arguments << QLatin1String( "program" )
+			<< QLatin1String( "--correct-argument" ) << value;
 
 		QtArgCmdLine cmd( arguments );
 
-		QtArg one( 'a', QString::fromLatin1( "correct-argument" ),
-			QString::fromLatin1( "It's our argument with correct name and flag" ),
+		QtArg one( QLatin1Char( 'a' ), QLatin1String( "correct-argument" ),
+			QLatin1String( "It's our argument with correct name and flag" ),
 			false, true );
 
 		cmd.addArg( one );

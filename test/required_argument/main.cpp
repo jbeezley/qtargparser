@@ -49,12 +49,12 @@ UNIT_TEST_START
 	UNIT_START( test_required_argument_that_not_defined )
 
 		QStringList arguments;
-		arguments << "program";
+		arguments << QLatin1String( "program" );
 
 		QtArgCmdLine cmd( arguments );
 
-		QtArg one( QString::fromLatin1( "one" ),
-			QString::fromLatin1( "It's our required argument without option" ),
+		QtArg one( QLatin1String( "one" ),
+			QLatin1String( "It's our required argument without option" ),
 			true );
 
 		cmd.addArg( one );
@@ -71,12 +71,14 @@ UNIT_TEST_START
 	UNIT_START( test_required_argument_and_unexpected_option )
 
 		QStringList arguments;
-		arguments << "program" << "--one" << "option or another argument?!";
+		arguments << QLatin1String( "program" )
+			<< QLatin1String( "--one" )
+			<< QLatin1String( "option or another argument?!" );
 
 		QtArgCmdLine cmd( arguments );
 
-		QtArg one( QString::fromLatin1( "one" ),
-			QString::fromLatin1( "It's our required argument without option" ),
+		QtArg one( QLatin1String( "one" ),
+			QLatin1String( "It's our required argument without option" ),
 			true );
 
 		cmd.addArg( one );
@@ -93,12 +95,12 @@ UNIT_TEST_START
 	UNIT_START( test_required_argument_defined )
 
 		QStringList arguments;
-		arguments << "program" << "--one";
+		arguments << QLatin1String( "program" ) << QLatin1String( "--one" );
 
 		QtArgCmdLine cmd( arguments );
 
-		QtArg one( QString::fromLatin1( "one" ),
-			QString::fromLatin1( "It's our required argument without option" ),
+		QtArg one( QLatin1String( "one" ),
+			QLatin1String( "It's our required argument without option" ),
 			true );
 
 		cmd.addArg( one );

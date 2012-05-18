@@ -49,7 +49,9 @@ UNIT_TEST_START
 	UNIT_START( test_very_similar_names )
 
 		QStringList arguments;
-		arguments << "test" << "--log" << "log.txt" << "--log1" << "log1.txt";
+		arguments << QLatin1String( "test" )
+			<< QLatin1String( "--log" ) << QLatin1String( "log.txt" )
+			<< QLatin1String( "--log1" ) << QLatin1String( "log1.txt" );
 
 		QtArgCmdLine cmd( arguments );
 
@@ -63,8 +65,8 @@ UNIT_TEST_START
 
 		cmd.parse();
 
-		CHECK_CONDITION( log.value().toString() == "log.txt" )
-		CHECK_CONDITION( log1.value().toString() == "log1.txt" )
+		CHECK_CONDITION( log.value().toString() == QLatin1String( "log.txt" ) )
+		CHECK_CONDITION( log1.value().toString() == QLatin1String( "log1.txt" ) )
 
 	UNIT_FINISH( test_very_similar_names )
 

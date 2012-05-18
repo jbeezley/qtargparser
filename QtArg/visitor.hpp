@@ -110,7 +110,7 @@ class MyArg
 {
 public:
   MyArg()
-	:  QtArg( 'a', QLatin1String( "arg" ),
+	:  QtArg( QLatin1Char( 'a' ), QLatin1String( "arg" ),
 		  QLatin1String( "This is our argument with two required values" ),
 		  true, true )
   {
