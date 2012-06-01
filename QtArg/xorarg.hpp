@@ -282,9 +282,12 @@ QtXorArg::QtXorArg( const QtXorArg & arg )
 inline QtXorArg &
 QtXorArg::operator = ( const QtXorArg & arg )
 {
-	m_args = arg.arguments();
-	m_required = arg.isRequired();
-	m_name = arg.m_name;
+	if( this != &arg )
+	{
+		m_args = arg.arguments();
+		m_required = arg.isRequired();
+		m_name = arg.m_name;
+	}
 
 	return *this;
 }

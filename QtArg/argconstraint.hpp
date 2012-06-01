@@ -46,13 +46,17 @@
 	\brief Base class for the constraints of argument's values.
 */
 class QtArgConstraintIface {
-	protected:
-		virtual ~QtArgConstraintIface() {}
-
 	public:
+		virtual ~QtArgConstraintIface() = 0;
+
 		//! \retval true if constraint observed.
 		//! \retval false otherwise.
 		virtual bool check( const QVariant & value ) const = 0;
 }; // class QtArgConstraintIface
+
+inline
+QtArgConstraintIface::~QtArgConstraintIface()
+{
+}
 
 #endif // QTARG__ARGCONSTRAINT_HPP__INCLUDED

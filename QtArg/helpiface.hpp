@@ -99,10 +99,9 @@ markUnrequiredPartOfTheName(
 	\brief Interface for the help printer.
 */
 class QtArgHelpPrinterIface {
-	protected:
-		virtual ~QtArgHelpPrinterIface() {}
-
 	public:
+		virtual ~QtArgHelpPrinterIface() = 0;
+
 		//! Print help.
 		virtual void print() const = 0;
 
@@ -220,5 +219,10 @@ const QString QtArgHelpPrinterIface::flagMarker =
 
 const QString QtArgHelpPrinterIface::nameMarker =
 	QLatin1String( "%nameMarker%" );
+
+inline
+QtArgHelpPrinterIface::~QtArgHelpPrinterIface()
+{
+}
 
 #endif // QTARG__HELPIFACE_HPP__INCLUDED

@@ -146,10 +146,9 @@ private:
 	[-a value1] is incorrect.
 */
 class QtArgVisitorIface {
-	protected:
-		virtual ~QtArgVisitorIface() {}
-
 	public:
+		virtual ~QtArgVisitorIface() = 0;
+
 		//! Process with visitor.
 		/*!
 			In this method visitor should process with command line
@@ -162,7 +161,13 @@ class QtArgVisitorIface {
 
 			Command line context passed as argument to this method.
 		*/
-		virtual void visit( QtArgCmdLineContext & ) {}
+		virtual void visit( QtArgCmdLineContext & ) = 0;
 }; // class QtArgVisitorIface
+
+
+inline
+QtArgVisitorIface::~QtArgVisitorIface()
+{
+}
 
 #endif // QTARG__VISITOR_HPP__INCLUDED

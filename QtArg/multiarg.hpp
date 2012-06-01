@@ -318,9 +318,12 @@ QtMultiArg::QtMultiArg( const QtMultiArg & arg )
 inline QtMultiArg &
 QtMultiArg::operator = ( const QtMultiArg & arg )
 {
-	QtArg::operator = ( arg );
+	if( this != &arg )
+	{
+		QtArg::operator = ( arg );
 
-	m_count = arg.count();
+		m_count = arg.count();
+	}
 
 	return *this;
 }

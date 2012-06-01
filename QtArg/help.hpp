@@ -62,9 +62,10 @@ class QtArgDefaultHelpPrinter
 
 	protected:
 		QtArgDefaultHelpPrinter() {}
-		virtual ~QtArgDefaultHelpPrinter() {}
 
 	public:
+		virtual ~QtArgDefaultHelpPrinter();
+
 		//! \return Static instance of this help printer.
 		static QtArgDefaultHelpPrinter * instance()
 		{
@@ -145,6 +146,11 @@ const QString QtArgDefaultHelpPrinter::m_argValue =
 
 const QString QtArgDefaultHelpPrinter::m_namesSeparator =
 	QLatin1String( ", " );
+
+inline
+QtArgDefaultHelpPrinter::~QtArgDefaultHelpPrinter()
+{
+}
 
 inline void
 QtArgDefaultHelpPrinter::print() const

@@ -73,6 +73,8 @@ class QtArgIface {
 		//! Type of the list of argument's flags.
 		typedef QList< QChar > FlagsList;
 
+		virtual ~QtArgIface() = 0;
+
 	protected:
 		QtArgIface()
 		{}
@@ -84,9 +86,6 @@ class QtArgIface {
 			const FlagsList & flags )
 			:	m_flags( flags )
 			,	m_names( names )
-		{}
-
-		virtual ~QtArgIface()
 		{}
 
 	public:
@@ -250,6 +249,11 @@ class QtArgIface {
 //
 // QtArgIface implementation.
 //
+
+inline
+QtArgIface::~QtArgIface()
+{
+}
 
 inline const QtArgIface::FlagsList &
 QtArgIface::flags() const
@@ -948,16 +952,19 @@ QtArg::QtArg( const QtArg & arg )
 inline QtArg &
 QtArg::operator = ( const QtArg & arg )
 {
-	m_flags = arg.m_flags;
-	m_names = arg.m_names;
-	m_description = arg.m_description;
-	m_required = arg.m_required;
-	m_withValue = arg.m_withValue;
-	m_visitor = arg.m_visitor;
-	m_defined = arg.m_defined;
-	m_present = arg.m_present;
-	m_value = arg.m_value;
-	m_constraint = arg.m_constraint;
+	if( this != &arg )
+	{
+		m_flags = arg.m_flags;
+		m_names = arg.m_names;
+		m_description = arg.m_description;
+		m_required = arg.m_required;
+		m_withValue = arg.m_withValue;
+		m_visitor = arg.m_visitor;
+		m_defined = arg.m_defined;
+		m_present = arg.m_present;
+		m_value = arg.m_value;
+		m_constraint = arg.m_constraint;
+	}
 
 	return *this;
 }

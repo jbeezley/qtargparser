@@ -58,13 +58,11 @@ class QtArgIface;
 	\sa QtArgCmdLine
 */
 class QtArgCmdLineIface {
-	protected:
-		virtual ~QtArgCmdLineIface()
-		{}
-
 	public:
 		//! Type of the list of the arguments in the command line.
 		typedef QList< QtArgIface* > QtArgumentsList;
+
+		virtual ~QtArgCmdLineIface() = 0;
 
 		/*!
 			\return List of arguments handled by this command
@@ -129,5 +127,10 @@ class QtArgCmdLineIface {
 		*/
 		virtual bool isArgument( const QString & str ) const = 0;
 }; // class QtArgCmdLineIface
+
+inline
+QtArgCmdLineIface::~QtArgCmdLineIface()
+{
+}
 
 #endif // QTARG__CMDLINEIFACE_HPP__INCLUDED
