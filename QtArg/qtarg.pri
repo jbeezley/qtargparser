@@ -1,6 +1,5 @@
 
-INCLUDEPATH += $$PWD
-/../
+INCLUDEPATH += $$PWD $$PWD/..
 
 HEADERS += $$PWD/arg.hpp \
            $$PWD/argconstraint.hpp \
