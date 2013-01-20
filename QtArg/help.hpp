@@ -655,7 +655,7 @@ QtArgHelp::printHelp( const QString & argName )
 		try {
 			printHelp( m_cmdLine->findArgument( argName ) );
 		}
-		catch( const QtArgUnknownArgumentEx & x )
+		catch( const QtArgUnknownArgumentEx & )
 		{
 			QTextStream out( stdout );
 
@@ -709,7 +709,7 @@ QtArgHelp::visit( QtArgCmdLineContext & context )
 
 					printHelp( arg );
 				}
-				catch( const QtArgUnknownArgumentEx & x )
+				catch( const QtArgUnknownArgumentEx & )
 				{
 					out << QString::fromLatin1( "Unknown argument: %1%2" )
 						.arg( m_cmdLine->delimiter() )
