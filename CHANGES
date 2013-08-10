@@ -1,3 +1,7 @@
+version 1.3.0 ()
+ * Refusal from MxxRu as build system. Now all build steps will do the qmake.
+ * Review code for work with Qt 5.
+
 version 1.2.1 (2012.05.18)
  * Reviewed code for compilation with QT_NO_CAST_FROM_ASCII macro defined.
 

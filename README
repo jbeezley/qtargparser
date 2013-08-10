@@ -1,22 +1,12 @@
-QtArg is a small C++ library based on the Qt 4
+QtArg is a small C++ library based on the Qt
 for parsing command line arguments.
 
 REQUIREMENTS
 
 For compiling QtArg you should have installed:
- * Qt 4 framework (http://qt.nokia.com/)
- * Ruby programming language (http://www.ruby-lang.org/en/)
- * mxx_ru Ruby gem (http://rubyforge.org/projects/mxx-ru/)
+ * Qt 4 or higher framework (http://qt.nokia.com/)
 
 
 COMPILING
 
- * You should have installed Ruby programming language and installed Mxx_ru gem.
-   Run in the command prompt: gem install Mxx_ru.
-
- * After this you have to configure MxxRu: make "MXX_RU_CPP_TOOLSET" system environment
-   with "vc9" value, for example if you have Microsoft Visual Studio 9.0 installed. All
-   possible values for this enveronment you can see in the documentation by MxxRu
-   (http://rubyforge.org/docman/view.php/1361/9116/mxx_ru-1.4.7-draft.pdf).
-
- * And now just run build.rb which is a Ruby program and compilation process will start.
+ * Just run qmake and then jom or another make executable

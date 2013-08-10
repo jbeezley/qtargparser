@@ -134,7 +134,14 @@ CHECK_THROW__(__FILE__, __LINE__, exception_class, body )
 // UNIT_TEST_START
 //
 
-#define UNIT_TEST_START
+#define UNIT_TEST_START \
+struct unit_test_start_t { \
+	unit_test_start_t() \
+	{ \
+		std::cout << "Launching unit test..." << std::endl; \
+	} \
+}; \
+unit_test_start_t g_starter;
 
 
 //
@@ -145,6 +152,8 @@ CHECK_THROW__(__FILE__, __LINE__, exception_class, body )
 int \
 main( int argc, char ** argv ) \
 { \
+	argc; argv; \
+	std::cout << "Unit test has finished." << std::endl << std::endl; \
 	return 0; \
 }
 
