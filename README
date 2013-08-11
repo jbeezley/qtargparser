@@ -4,7 +4,7 @@ for parsing command line arguments.
 REQUIREMENTS
 
 For compiling QtArg you should have installed:
- * Qt 4 or higher framework (http://qt.nokia.com/)
+ * Qt 4 or higher framework (http://qt-project.org/)
 
 
 COMPILING
