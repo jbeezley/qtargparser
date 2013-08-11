@@ -1,4 +1,4 @@
-version 1.3.0 ()
+version 1.3.0 (2013.08.11)
  * Refusal from MxxRu as build system. Now all build steps will do the qmake.
  * Review code for work with Qt 5.
 
