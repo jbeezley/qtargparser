@@ -11,13 +11,13 @@ try {
 	QtArgCmdLine cmd( argc, argv );
 
 Then you have to instantiate QtArg classes or derived from it for each argument that your program
-will process. There is many constructors in the QtArg and derived classes on every occasionof life.
+will process. There is many constructors in the QtArg and derived classes on every occasional life.
 Look into the documentation for understanding it.
 
 Well let's look on the "one" argument. I have used for it class QtArg because this arguments is
 with one parameter. I have decided that this argument have to have two long names ( "--one" and
 "--and-one" ) without flags. Second argument is description that needed for printing short help.
-Thirs and fourth arguments are set to true that mean that this argument is required and have value
+Third and fourth arguments are set to true that mean that this argument is required and have value
 (parameter).
 
 	QtArg one( QtArgIface::NamesList() << QLatin1String( "one" )
